@@ -1,0 +1,135 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "isbn": "9780439708180",
+      "title": "Harry Potter and the Sorcerer's Stone",
+      "author": "J.K. Rowling",
+      "category": "Fantasy",
+      "publisher": "Scholastic",
+      "publishedYear": 1998,
+      "language": "English",
+      "pages": 309,
+      "cover": "/images/books/harry-potter-1.jpg",
+      "description": "The first novel in the Harry Potter series.",
+      "totalCopies": 5,
+      "availableCopies": 4,
+      "status": "available"
+    },
+    {
+      "id": 2,
+      "isbn": "9780132350884",
+      "title": "Clean Code",
+      "author": "Robert C. Martin",
+      "category": "Programming",
+      "publisher": "Prentice Hall",
+      "publishedYear": 2008,
+      "language": "English",
+      "pages": 464,
+      "cover": "/images/books/clean-code.jpg",
+      "description": "A handbook of agile software craftsmanship.",
+      "totalCopies": 3,
+      "availableCopies": 0,
+      "status": "checked-out"
+    },
+    {
+      "id": 3,
+      "isbn": "9781491950296",
+      "title": "Learning React",
+      "author": "Alex Banks",
+      "category": "Programming",
+      "publisher": "O'Reilly",
+      "publishedYear": 2020,
+      "language": "English",
+      "pages": 350,
+      "cover": "/images/books/learning-react.jpg",
+      "description": "Modern React development.",
+      "totalCopies": 4,
+      "availableCopies": 2,
+      "status": "available"
+    },
+    {
+      "id": 4,
+      "isbn": "9780061120084",
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "category": "Classic",
+      "publisher": "HarperCollins",
+      "publishedYear": 1960,
+      "language": "English",
+      "pages": 336,
+      "cover": "/images/books/mockingbird.jpg",
+      "description": "Classic American novel.",
+      "totalCopies": 2,
+      "availableCopies": 1,
+      "status": "available"
+    },
+    {
+      "id": 5,
+      "isbn": "9780553380163",
+      "title": "A Brief History of Time",
+      "author": "Stephen Hawking",
+      "category": "Science",
+      "publisher": "Bantam",
+      "publishedYear": 1988,
+      "language": "English",
+      "pages": 256,
+      "cover": "/images/books/history-of-time.jpg",
+      "description": "An introduction to cosmology.",
+      "totalCopies": 3,
+      "availableCopies": 3,
+      "status": "available"
+    }
+  ],
+
+  "users": [
+    {
+      "id": 1,
+      "fullName": "John Smith",
+      "email": "john@example.com",
+      "phone": "+962790000001",
+      "membershipNumber": "LIB-1001",
+      "status": "active",
+      "password": "password123"
+    },
+    {
+      "id": 2,
+      "fullName": "Sarah Johnson",
+      "email": "sarah@example.com",
+      "phone": "+962790000002",
+      "membershipNumber": "LIB-1002",
+      "status": "active",
+      "password": "password123"
+    },
+    {
+      "id": 3,
+      "fullName": "Michael Brown",
+      "email": "michael@example.com",
+      "phone": "+962790000003",
+      "membershipNumber": "LIB-1003",
+      "status": "active",
+      "password": "password123"
+    }
+  ],
+
+  "borrowings": [
+    {
+      "id": 1,
+      "bookId": 2,
+      "userId": 1,
+      "borrowDate": "2026-08-01",
+      "dueDate": "2026-08-15",
+      "returnDate": null,
+      "status": "borrowed"
+    },
+    {
+      "id": 2,
+      "bookId": 1,
+      "userId": 2,
+      "borrowDate": "2026-07-20",
+      "dueDate": "2026-08-03",
+      "returnDate": "2026-08-02",
+      "status": "returned"
+    }
+  ]
+}
