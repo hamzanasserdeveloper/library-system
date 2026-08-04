@@ -3,89 +3,87 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import { CookieManager } from "./cookies";
-import { CookieKeys } from "../constants/SystemConfig";
 
-export interface ApiError extends Error {
-  message: string;
-  status?: number;
-  code?: string;
-  data?: unknown;
-}
+import { API_CONFIG, CookieKeys } from "@/constants/SystemConfig";
+import { getCookieByKey, removeCookie } from "./cookies/ClientSide";
+import { mapApiError } from "./ApiErrorHandler";
 
-export interface ApiResponse<TData = unknown> {
-  data: TData;
-  message?: string;
-  success: boolean;
-}
+const API_TIMEOUT = API_CONFIG.TIMEOUT;
 
-const API_TIMEOUT = 30000;
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const BASE_URL = API_CONFIG.BASE_URL;
 
 let abortController = new AbortController();
 
-function getAuthToken(isServerSide: boolean): string | null {
-  if (isServerSide) {
-    return CookieManager.getServer(CookieKeys.Token);
-  }
-  return CookieManager.get(CookieKeys.Token);
+async function getAuthToken(isServer: boolean) {
+  // return isServer
+  //   ? await getServerCookie(CookieKeys.Token)
+  //   :
+  getCookieByKey(CookieKeys.Token);
 }
 
-function handleLogout(isServerSide: boolean) {
-  if (isServerSide) {
-    CookieManager.deleteServer(CookieKeys.Token);
-    CookieManager.deleteServer(CookieKeys.UserId);
-  } else {
-    CookieManager.delete(CookieKeys.Token);
-    CookieManager.delete(CookieKeys.UserId);
-    if (typeof window !== "undefined") {
-      const locale = window.location.pathname.split("/")[1] || "en";
-      window.location.href = `/${locale}/login`;
-    }
+async function logout(isServer: boolean) {
+  // if (isServer) {
+  //   await removeServerCookie(CookieKeys.Token);
+  //   await removeServerCookie(CookieKeys.UserId);
+  //   return;
+  // }
+
+  removeCookie(CookieKeys.Token);
+  removeCookie(CookieKeys.UserId);
+
+  if (typeof window !== "undefined") {
+    const locale = window.location.pathname.split("/")[1] || "en";
+    window.location.assign(`/${locale}/login`);
   }
 }
 
-function createInstance(isServerSide: boolean = false) {
+function createAxios(isServer = false) {
   const instance = axios.create({
     baseURL: BASE_URL,
     timeout: API_TIMEOUT,
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   instance.interceptors.request.use(
-    (config: InternalAxiosRequestConfig) => {
+    async (config: InternalAxiosRequestConfig) => {
       config.signal = abortController.signal;
 
-      const token = getAuthToken(isServerSide);
+      const token = getAuthToken(isServer);
+
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
+
       return config;
     },
-    (error) => Promise.reject(error),
+    (error) => Promise.reject(mapApiError(error)),
   );
 
   instance.interceptors.response.use(
     (response: AxiosResponse) => response,
-    (error) => {
-      if (axios.isAxiosError(error) && error.response?.status === 401) {
-        handleLogout(isServerSide);
+
+    async (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        await logout(isServer);
       }
-      return Promise.reject(error);
+
+      return Promise.reject(mapApiError(error));
     },
   );
 
   return instance;
 }
 
-export const axiosInstance = createInstance(false);
-export const serverAxiosInstance = createInstance(true);
+export const axiosClient = createAxios(false);
 
-export const cancelAllRequests = () => {
+export const axiosServer = createAxios(true);
+
+export const getAxiosInstance = (server = false) =>
+  server ? axiosServer : axiosClient;
+
+export function cancelAllRequests() {
   abortController.abort();
   abortController = new AbortController();
-};
-
-export function getAxiosInstance(isServerSide: boolean = false) {
-  return isServerSide ? serverAxiosInstance : axiosInstance;
 }

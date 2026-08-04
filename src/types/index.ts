@@ -1,3 +1,5 @@
+import { HttpMethod, ToastPosition, ToastType } from "@/constants/SystemConfig";
+
 export interface Book {
   id: number;
   isbn: string;
@@ -61,7 +63,7 @@ export interface ApiResponse<TData = unknown> {
 export interface FetchOptions<
   TResponse = unknown,
   TRequest = unknown,
-  TParams extends Record<string, unknown> = Record<string, unknown>
+  TParams extends Record<string, unknown> = Record<string, unknown>,
 > {
   endpoint: string;
   method: HttpMethod;
@@ -75,20 +77,6 @@ export interface FetchOptions<
 export interface FetchResult<T> {
   data: T | null;
   error: ApiError | null;
-}
-
-export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-export type ToastType = "error" | "success" | "info" | "warning";
-export type ToastPosition = "top-start" | "top-center" | "top-end" | "bottom-start" | "bottom-center" | "bottom-end";
-
-export interface Toast {
-  id: string;
-  title: string;
-  message: string;
-  type: ToastType;
-  duration?: number;
-  position?: ToastPosition;
-  createdAt: number;
 }
 
 export interface ShowToastOptions {

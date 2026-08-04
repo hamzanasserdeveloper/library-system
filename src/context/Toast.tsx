@@ -1,5 +1,12 @@
-import { createContext, useContext, useReducer, ReactNode, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useCallback,
+} from "react";
 import { ToastType, ToastPosition } from "@/constants/SystemConfig";
+import { generateId } from "@/helper";
 
 export interface Toast {
   id: string;
@@ -23,10 +30,6 @@ type ToastAction =
 const DEFAULT_DURATION = 5000;
 const MAX_TOASTS = 5;
 
-function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-}
-
 function toastReducer(state: ToastState, action: ToastAction): ToastState {
   switch (action.type) {
     case "ADD": {
@@ -34,7 +37,10 @@ function toastReducer(state: ToastState, action: ToastAction): ToastState {
       return { ...state, toasts: newToasts };
     }
     case "REMOVE":
-      return { ...state, toasts: state.toasts.filter((t) => t.id !== action.payload) };
+      return {
+        ...state,
+        toasts: state.toasts.filter((t) => t.id !== action.payload),
+      };
     case "CLEAR":
       return { ...state, toasts: [] };
     default:
@@ -87,7 +93,7 @@ export function ToastProvider({
       dispatch({ type: "ADD", payload: toast });
       return id;
     },
-    [defaultDuration, defaultPosition]
+    [defaultDuration, defaultPosition],
   );
 
   const dismissToast = useCallback((id: string) => {
@@ -99,7 +105,9 @@ export function ToastProvider({
   }, []);
 
   return (
-    <ToastContext.Provider value={{ toasts: state.toasts, showToast, dismissToast, dismissAll }}>
+    <ToastContext.Provider
+      value={{ toasts: state.toasts, showToast, dismissToast, dismissAll }}
+    >
       {children}
     </ToastContext.Provider>
   );
@@ -116,14 +124,26 @@ export function useToast(): ToastContextValue {
 export function useToastHelpers() {
   const { showToast, dismissToast, dismissAll } = useToast();
   return {
-    error: (title: string, message: string, options?: Partial<ShowToastOptions>) =>
-      showToast({ title, message, type: ToastType.Error, ...options }),
-    success: (title: string, message: string, options?: Partial<ShowToastOptions>) =>
-      showToast({ title, message, type: ToastType.Success, ...options }),
-    info: (title: string, message: string, options?: Partial<ShowToastOptions>) =>
-      showToast({ title, message, type: ToastType.Info, ...options }),
-    warning: (title: string, message: string, options?: Partial<ShowToastOptions>) =>
-      showToast({ title, message, type: ToastType.Warning, ...options }),
+    error: (
+      title: string,
+      message: string,
+      options?: Partial<ShowToastOptions>,
+    ) => showToast({ title, message, type: ToastType.Error, ...options }),
+    success: (
+      title: string,
+      message: string,
+      options?: Partial<ShowToastOptions>,
+    ) => showToast({ title, message, type: ToastType.Success, ...options }),
+    info: (
+      title: string,
+      message: string,
+      options?: Partial<ShowToastOptions>,
+    ) => showToast({ title, message, type: ToastType.Info, ...options }),
+    warning: (
+      title: string,
+      message: string,
+      options?: Partial<ShowToastOptions>,
+    ) => showToast({ title, message, type: ToastType.Warning, ...options }),
     dismiss: dismissToast,
     dismissAll,
   };

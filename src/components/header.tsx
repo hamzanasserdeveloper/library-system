@@ -1,17 +1,15 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { LocaleSwitcher } from "./locale-switcher";
-import { ThemeToggle } from "./theme-toggle";
-import { getSession } from "@/lib/auth";
-import { User } from "@/types";
+import { LocaleSwitcher } from "./LocaleSwitcher";
+import { ThemeToggle } from "./ThemeToggle";
+import { useAuth } from "@/context";
 
-interface HeaderProps {
-  user?: User | null;
-}
-
-export async function Header({ user }: HeaderProps = {}) {
-  const t = await getTranslations("nav");
-  const tAuth = await getTranslations("auth");
+export function Header() {
+  const t = useTranslations("nav");
+  const tAuth = useTranslations("auth");
+  const { user, logout, isLoading } = useAuth();
 
   const links = [
     { href: "/", label: t("dashboard") },
@@ -48,19 +46,19 @@ export async function Header({ user }: HeaderProps = {}) {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <LocaleSwitcher />
-          {user ? (
+          {isLoading ? (
+            <div className="h-8 w-8 animate-pulse bg-muted rounded-full" />
+          ) : user ? (
             <div className="flex items-center gap-3">
               <span className="text-sm text-muted-foreground hidden sm:block">
                 {user.fullName}
               </span>
-              <div className="flex items-center gap-1">
-                <Link
-                  href="/logout"
-                  className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
-                >
-                  {tAuth.signIn}
-                </Link>
-              </div>
+              <button
+                onClick={logout}
+                className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              >
+                {tAuth("logout")}
+              </button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
@@ -68,13 +66,13 @@ export async function Header({ user }: HeaderProps = {}) {
                 href="/login"
                 className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
               >
-                {tAuth.signIn}
+                {tAuth("signIn")}
               </Link>
               <Link
                 href="/signup"
                 className="rounded-full px-3 py-1.5 text-sm font-medium bg-primary text-primary-foreground transition hover:bg-primary/90"
               >
-                {tAuth.signUp}
+                {tAuth("signUp")}
               </Link>
             </div>
           )}

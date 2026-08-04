@@ -194,6 +194,8 @@
     "creatingAccount": "جاري إنشاء الحساب...",
     "registerSuccess": "تم إنشاء الحساب بنجاح!",
     "alreadyHaveAccount": "لديك حساب بالفعل؟",
-    "signIn": "تسجيل الدخول"
+    "signIn": "تسجيل الدخول",
+    "passwordMinLength": "كلمة السر يجب ان تكون 8 محارف او اكثر",
+    "logout": "تسجيل الخروج"
   }
 }

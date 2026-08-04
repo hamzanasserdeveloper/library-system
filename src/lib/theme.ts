@@ -1,18 +1,18 @@
-const STORAGE_KEY = 'theme';
+import { CookieKeys } from "@/constants/SystemConfig";
 
-type Theme = 'dark' | 'light';
+type Theme = "dark" | "light";
 
 function getSystemTheme(): Theme {
-  if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light';
+  if (typeof window === "undefined") return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
 export function getTheme(): Theme {
-  if (typeof window === 'undefined') return 'light';
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === 'dark' || stored === 'light' ? stored : getSystemTheme();
+  if (typeof window === "undefined") return "light";
+  const stored = window.localStorage.getItem(CookieKeys.Theme);
+  return stored === "dark" || stored === "light" ? stored : getSystemTheme();
 }
 
 const listeners = new Set<() => void>();
@@ -25,7 +25,7 @@ export function subscribeTheme(listener: () => void) {
 }
 
 export function setTheme(theme: Theme) {
-  document.documentElement.classList.toggle('dark', theme === 'dark');
-  window.localStorage.setItem(STORAGE_KEY, theme);
+  document.documentElement.classList.toggle("dark", theme === "dark");
+  window.localStorage.setItem(CookieKeys.Theme, theme);
   listeners.forEach((listener) => listener());
 }

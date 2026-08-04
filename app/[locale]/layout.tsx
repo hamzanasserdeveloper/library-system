@@ -5,12 +5,12 @@ import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { ToastProviderWrapper } from "@/components/toast-provider";
-import { getSession } from "@/lib/auth";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { Providers } from "@/context";
 import Script from "next/script";
 import "../globals.css";
+import { CookieKeys } from "@/constants/SystemConfig";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 const themeScript = `
   (function () {
     try {
-      var stored = localStorage.getItem('theme');
+      var stored = localStorage.getItem('${CookieKeys.Theme}');
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       var theme =
         stored === 'light' || stored === 'dark'
@@ -82,8 +82,6 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale as Locale);
 
-  const user = await getSession();
-
   return (
     <html
       lang={locale}
@@ -95,15 +93,15 @@ export default async function LocaleLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
-        <ToastProviderWrapper>
+        <Providers>
           <NextIntlClientProvider>
-            <Header user={user} />
+            <Header />
             <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6">
               {children}
             </main>
             <Footer />
           </NextIntlClientProvider>
-        </ToastProviderWrapper>
+        </Providers>
       </body>
     </html>
   );

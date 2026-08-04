@@ -1,80 +1,116 @@
 import { baseFetch } from "./api-client";
 import { Endpoints } from "@/constants/Endpoints";
-import { User, PaginatedResponse } from "@/types";
-import { CookieManager } from "@/utils/cookies";
+import { User, PaginatedResponse, ApiError } from "@/types";
+import { CookieKeys, HttpMethod } from "@/constants/SystemConfig";
+import {
+  getCookieByKey,
+  removeCookie,
+  setCookie,
+} from "@/utils/cookies/ClientSide";
 
 export interface LoginCredentials {
   email: string;
   password: string;
 }
 
-export interface RegisterData extends Omit<User, "id"> {
+export interface RegisterData {
+  fullName: string;
+  email: string;
+  phone: string;
   password: string;
 }
 
+function createError(message: string, status: number): ApiError {
+  return {
+    name: "ApiError",
+    message,
+    status,
+    code: String(status),
+    data: null,
+  };
+}
+
 export const userService = {
-  async login(credentials: LoginCredentials) {
+  async login(credentials: { email: string; password: string }) {
     const result = await baseFetch<User[], never, { email: string }>({
       endpoint: Endpoints.users.byEmail(credentials.email),
-      method: "GET" as const,
+      method: HttpMethod.GET,
       params: { email: credentials.email },
     });
 
     if (result.error || !result.data || result.data.length === 0) {
-      return { data: null, error: { message: "Invalid email or password", status: 401 } as any };
+      return {
+        data: null,
+        error: createError("Invalid email or password", 401),
+      };
     }
 
     const user = result.data[0];
     if (user.password !== credentials.password) {
-      return { data: null, error: { message: "Invalid email or password", status: 401 } as any };
+      return {
+        data: null,
+        error: createError("Invalid email or password", 401),
+      };
     }
 
-    CookieManager.set("user_id", String(user.id), { maxAge: 60 * 60 * 24 * 7, sameSite: "lax" });
-    CookieManager.set("token", "fake-jwt-token", { maxAge: 60 * 60 * 24 * 7, sameSite: "lax" });
+    setCookie(CookieKeys.UserId, String(user.id));
+    setCookie(CookieKeys.Token, "fake-jwt-token");
 
-    const { password: _password, ...userWithoutPassword } = user;
+    const { password: _, ...userWithoutPassword } = user;
     return { data: userWithoutPassword as User, error: null };
   },
 
-  async register(data: RegisterData) {
+  async register(data: {
+    fullName: string;
+    email: string;
+    phone: string;
+    password: string;
+  }) {
     const existing = await baseFetch<User[], never, { email: string }>({
       endpoint: Endpoints.users.byEmail(data.email),
-      method: "GET" as const,
+      method: HttpMethod.GET,
       params: { email: data.email },
     });
 
     if (existing.data && existing.data.length > 0) {
-      return { data: null, error: { message: "Email already registered", status: 400 } as any };
+      return {
+        data: null,
+        error: createError("Email already registered", 400),
+      };
     }
 
     const result = await baseFetch<User, RegisterData>({
       endpoint: Endpoints.auth.register,
-      method: "POST" as const,
+      method: HttpMethod.POST,
       body: data,
     });
 
     if (result.data) {
-      CookieManager.set("user_id", String(result.data.id), { maxAge: 60 * 60 * 24 * 7, sameSite: "lax" });
-      CookieManager.set("token", "fake-jwt-token", { maxAge: 60 * 60 * 24 * 7, sameSite: "lax" });
+      setCookie(CookieKeys.UserId, String(result.data.id));
+      setCookie(CookieKeys.Token, "fake-jwt-token");
     }
 
     return result;
   },
 
   async getCurrentUser() {
-    const userId = CookieManager.get("user_id");
+    const userId = getCookieByKey(CookieKeys.UserId);
     if (!userId) return { data: null, error: null };
 
     return baseFetch<User, never, never>({
       endpoint: `/users/${userId}`,
-      method: "GET" as const,
+      method: HttpMethod.GET,
     });
   },
 
   async getUsers(params: { _page?: number; _per_page?: number } = {}) {
-    return baseFetch<PaginatedResponse<unknown>, never, unknown>({
+    return baseFetch<
+      PaginatedResponse<unknown>,
+      never,
+      Record<string, unknown>
+    >({
       endpoint: Endpoints.users.list,
-      method: "GET" as const,
+      method: HttpMethod.GET,
       params: {
         _page: params._page || 1,
         _per_page: params._per_page || 10,
@@ -83,27 +119,27 @@ export const userService = {
   },
 
   logout() {
-    CookieManager.delete("user_id");
-    CookieManager.delete("token");
-    CookieManager.delete("redirect_path");
+    removeCookie(CookieKeys.UserId);
+    removeCookie(CookieKeys.Token);
+    removeCookie(CookieKeys.RedirectPath);
   },
 
   saveRedirectPath(path: string) {
-    CookieManager.set("redirect_path", path, { maxAge: 60 * 60, sameSite: "lax" });
+    setCookie(CookieKeys.RedirectPath, path);
   },
 
   getRedirectPath(): string | null {
-    return CookieManager.get("redirect_path");
+    return getCookieByKey(CookieKeys.RedirectPath);
   },
 
   clearRedirectPath() {
-    CookieManager.delete("redirect_path");
+    removeCookie(CookieKeys.RedirectPath);
   },
 
   async getUserById(id: number) {
-    return baseFetch<unknown, never, never>({
+    return baseFetch<User, never, never>({
       endpoint: Endpoints.users.detail(id),
-      method: "GET" as const,
+      method: HttpMethod.GET,
     });
   },
 };

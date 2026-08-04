@@ -1,11 +1,9 @@
 export const Endpoints = {
-  // Auth
   auth: {
-    login: "/users",           // POST - find user by email (we'll filter)
-    register: "/users",        // POST - create user
-    me: (id: number) => `/users/${id}`, // GET - get current user
+    login: "/users",
+    register: "/users",
+    me: (id: number) => `/users/${id}`,
   },
-  // Books
   books: {
     list: "/books",
     detail: (id: number) => `/books/${id}`,
@@ -13,13 +11,11 @@ export const Endpoints = {
     update: (id: number) => `/books/${id}`,
     delete: (id: number) => `/books/${id}`,
   },
-  // Users
   users: {
     list: "/users",
     detail: (id: number) => `/users/${id}`,
     byEmail: (email: string) => `/users?email=${encodeURIComponent(email)}`,
   },
-  // Borrowings
   borrowings: {
     list: "/borrowings",
     create: "/borrowings",

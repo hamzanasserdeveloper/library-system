@@ -217,7 +217,7 @@ src/
 ├── constants/
 │   └── index.ts                # Page sizes, categories, statuses, due days
 ├── utils/
-│   └── index.ts                # formatDate, cn(), etc.
+│   └── index.ts                # formatDate, mergeClasses(), etc.
 └── messages/
     ├── en.json
     └── ar.json

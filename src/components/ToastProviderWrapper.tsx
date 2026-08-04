@@ -2,23 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { ToastProvider, useToast } from "@/utils/toast";
-import { ToastComponent } from "./toast";
+import { ToastProvider, useToast } from "@/context/Toast";
+import { ToastComponent } from "./Toast";
 import { ToastPosition } from "@/constants/SystemConfig";
 
 interface ToastContainerProps {
   position?: ToastPosition;
 }
 
-function ToastContainer({ position = ToastPosition.BottomEnd }: ToastContainerProps) {
+function ToastContainer({
+  position = ToastPosition.BottomEnd,
+}: ToastContainerProps) {
   const { toasts, dismissToast } = useToast();
 
   const positionStyles: Record<ToastPosition, string> = {
     [ToastPosition.TopStart]: "top-4 left-4 flex-col",
-    [ToastPosition.TopCenter]: "top-4 left-1/2 -translate-x-1/2 flex-col items-center",
+    [ToastPosition.TopCenter]:
+      "top-4 left-1/2 -translate-x-1/2 flex-col items-center",
     [ToastPosition.TopEnd]: "top-4 right-4 flex-col",
     [ToastPosition.BottomStart]: "bottom-4 left-4 flex-col-reverse",
-    [ToastPosition.BottomCenter]: "bottom-4 left-1/2 -translate-x-1/2 flex-col-reverse items-center",
+    [ToastPosition.BottomCenter]:
+      "bottom-4 left-1/2 -translate-x-1/2 flex-col-reverse items-center",
     [ToastPosition.BottomEnd]: "bottom-4 right-4 flex-col-reverse",
   };
 
@@ -39,7 +43,7 @@ function ToastContainer({ position = ToastPosition.BottomEnd }: ToastContainerPr
         </div>
       ))}
     </div>,
-    document.body
+    document.body,
   );
 }
 
@@ -55,7 +59,10 @@ export function ToastProviderWrapper({
   defaultDuration = 5000,
 }: ToastProviderProps) {
   return (
-    <ToastProvider defaultPosition={defaultPosition} defaultDuration={defaultDuration}>
+    <ToastProvider
+      defaultPosition={defaultPosition}
+      defaultDuration={defaultDuration}
+    >
       {children}
       <ToastContainer position={defaultPosition} />
     </ToastProvider>

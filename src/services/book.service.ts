@@ -1,7 +1,7 @@
 import { baseFetch } from "./api-client";
 import { HttpMethod } from "@/constants/SystemConfig";
 import { Endpoints } from "@/constants/Endpoints";
-import { Book, PaginatedResponse, ListBooksParams } from "@/types";
+import { PaginatedResponse, Book } from "@/types";
 
 export interface ListBooksParams {
   _page?: number;

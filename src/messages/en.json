@@ -194,6 +194,8 @@
     "creatingAccount": "Creating account...",
     "registerSuccess": "Account created successfully!",
     "alreadyHaveAccount": "Already have an account?",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "logout": "Logout"
   }
 }

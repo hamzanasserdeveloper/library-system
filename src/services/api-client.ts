@@ -1,150 +1,67 @@
-import { getAxiosInstance } from "@/utils/axios";
 import { ApiError, ApiResponse, FetchOptions, FetchResult } from "@/types";
+import { getAxiosInstance } from "@/utils/Axios";
 
-interface HttpMethod {
-  GET: "GET";
-  POST: "POST";
-  PUT: "PUT";
-  PATCH: "PATCH";
-  DELETE: "DELETE";
-}
+function buildUrl(endpoint: string, params?: Record<string, unknown>) {
+  if (!params) return endpoint;
 
-function buildUrlWithParams(endpoint: string, params?: Record<string, unknown>): string {
-  if (!params || Object.keys(params).length === 0) return endpoint;
+  const search = new URLSearchParams();
 
-  const searchParams = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== "") {
-      if (Array.isArray(value)) {
-        value.forEach((v) => searchParams.append(key, String(v)));
-      } else {
-        searchParams.append(key, String(value));
-      }
+    if (value === undefined || value === null || value === "") return;
+
+    if (Array.isArray(value)) {
+      value.forEach((v) => search.append(key, String(v)));
+    } else {
+      search.append(key, String(value));
     }
   });
 
-  const queryString = searchParams.toString();
-  return queryString ? `${endpoint}?${queryString}` : endpoint;
+  return search.toString() ? `${endpoint}?${search.toString()}` : endpoint;
 }
 
 export async function baseFetch<
-  TResponse = unknown,
+  TResponse,
   TRequest = unknown,
-  TParams extends Record<string, unknown> = Record<string, unknown>
->(options: FetchOptions<TResponse, TRequest, TParams>): Promise<FetchResult<TResponse>> {
-  const {
-    endpoint,
-    method,
-    params,
-    body,
-    headers,
-    onSuccess,
-    onError,
-  } = options;
-
+  TParams extends Record<string, unknown> = Record<string, unknown>,
+>(
+  options: FetchOptions<TResponse, TRequest, TParams>,
+  server = false,
+): Promise<FetchResult<TResponse>> {
   try {
-    const axios = getAxiosInstance(false);
-    const url = buildUrlWithParams(endpoint, params);
-
-    const response = await axios.request<ApiResponse<TResponse>>({
-      url,
-      method: method as HttpMethod,
-      data: body,
-      headers,
+    const response = await getAxiosInstance(server).request<
+      ApiResponse<TResponse>
+    >({
+      url: buildUrl(options.endpoint, options.params),
+      method: options.method,
+      data: options.body,
+      headers: options.headers,
     });
 
-    const data = response.data.data as TResponse;
+    options.onSuccess?.(response.data.data);
 
-    if (onSuccess) {
-      onSuccess(data);
-    }
+    return {
+      data: response.data.data,
+      error: null,
+    };
+  } catch (error) {
+    const apiError = error as ApiError;
 
-    return { data, error: null };
-  } catch (err) {
-    let apiError: ApiError;
+    options.onError?.(apiError);
 
-    if (err instanceof Error) {
-      const axiosError = err as { response?: { status?: number; data?: unknown }; code?: string };
-      apiError = {
-        name: "ApiError",
-        message: err.message,
-        status: axiosError.response?.status,
-        code: axiosError.code,
-        data: axiosError.response?.data,
-      };
-    } else {
-      apiError = {
-        name: "ApiError",
-        message: "Unknown error occurred",
-      };
-    }
-
-    if (onError) {
-      onError(apiError);
-    }
-
-    return { data: null, error: apiError };
+    return {
+      data: null,
+      error: apiError,
+    };
   }
 }
 
-export function createBaseFetch(isServerSide: boolean = false) {
-  return async function baseFetchServer<
-    TResponse = unknown,
+export const createBaseFetch =
+  (server = false) =>
+  <
+    TResponse,
     TRequest = unknown,
-    TParams extends Record<string, unknown> = Record<string, unknown>
-  >(options: FetchOptions<TResponse, TRequest, TParams>): Promise<FetchResult<TResponse>> {
-    const {
-      endpoint,
-      method,
-      params,
-      body,
-      headers,
-      onSuccess,
-      onError,
-    } = options;
-
-    try {
-      const axios = getAxiosInstance(isServerSide);
-      const url = buildUrlWithParams(endpoint, params);
-
-      const response = await axios.request<ApiResponse<TResponse>>({
-        url,
-        method: method as HttpMethod,
-        data: body,
-        headers,
-      });
-
-      const data = response.data.data as TResponse;
-
-      if (onSuccess) {
-        onSuccess(data);
-      }
-
-      return { data, error: null };
-    } catch (err) {
-      let apiError: ApiError;
-
-      if (err instanceof Error) {
-        const axiosError = err as { response?: { status?: number; data?: unknown }; code?: string };
-        apiError = {
-          name: "ApiError",
-          message: err.message,
-          status: axiosError.response?.status,
-          code: axiosError.code,
-          data: axiosError.response?.data,
-        };
-      } else {
-        apiError = {
-          name: "ApiError",
-          message: "Unknown error occurred",
-        };
-      }
-
-      if (onError) {
-        onError(apiError);
-      }
-
-      return { data: null, error: apiError };
-    }
-  };
-}
+    TParams extends Record<string, unknown> = Record<string, unknown>,
+  >(
+    options: FetchOptions<TResponse, TRequest, TParams>,
+  ) =>
+    baseFetch(options, server);
