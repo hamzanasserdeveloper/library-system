@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
 import { useAuth } from "@/context";
+import Logo from "./Logo";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -26,7 +27,7 @@ export function Header() {
             href="/"
             className="text-lg font-bold tracking-tight text-foreground"
           >
-            📚 <span className="sr-only">Library</span>
+            <Logo /> <span className="sr-only">Library</span>
           </Link>
           <nav
             aria-label="Main navigation"

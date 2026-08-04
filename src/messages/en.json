@@ -1,4 +1,8 @@
 {
+  "logo": {
+    "prefix": "Hamza",
+    "suffix": "a"
+  },
   "meta": {
     "title": "Library Management System",
     "description": "Browse, search, borrow and return books at your library.",

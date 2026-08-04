@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useToastHelpers } from "@/hooks/useToast";
 import { userService } from "@/services/user.service";
+import Logo from "@/components/Logo";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -78,42 +79,60 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-2xl font-bold text-foreground mb-6"
-          >
-            📚 <span className="sr-only">Library</span>
-          </Link>
-          <h1 className="text-3xl font-bold text-foreground">{t("signUp")}</h1>
-          <p className="mt-2 text-muted-foreground">{t("signUpSubtitle")}</p>
-        </div>
-
+    <div className=" flex items-center justify-center bg-background my-auto">
+      <div className="w-full max-w-200">
         <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
+          <h1 className="flex justify-center w-full mb-5 text-[40px] font-bold">
+            Join To Us
+          </h1>
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label
-                htmlFor="fullName"
-                className="block text-sm font-medium text-foreground mb-1.5"
-              >
-                {t("fullName")}
-              </label>
-              <input
-                id="fullName"
-                name="fullName"
-                type="text"
-                value={formData.fullName}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
-                placeholder={t("fullNamePlaceholder")}
-                disabled={isLoading}
-                autoComplete="name"
-              />
-              {errors.fullName && (
-                <p className="mt-1.5 text-sm text-red-500">{errors.fullName}</p>
-              )}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="fullName"
+                  className="block text-sm font-medium text-foreground mb-1.5"
+                >
+                  {t("fullName")}
+                </label>
+                <input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  placeholder={t("fullNamePlaceholder")}
+                  disabled={isLoading}
+                  autoComplete="name"
+                />
+                {errors.fullName && (
+                  <p className="mt-1.5 text-sm text-red-500">
+                    {errors.fullName}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-foreground mb-1.5"
+                >
+                  {t("phone")}
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  placeholder={t("phonePlaceholder")}
+                  disabled={isLoading}
+                  autoComplete="tel"
+                />
+                {errors.phone && (
+                  <p className="mt-1.5 text-sm text-red-500">{errors.phone}</p>
+                )}
+              </div>
             </div>
 
             <div>
@@ -138,89 +157,68 @@ export default function SignupPage() {
                 <p className="mt-1.5 text-sm text-red-500">{errors.email}</p>
               )}
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-foreground mb-1.5"
+                >
+                  {t("password")}
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  placeholder={t("passwordPlaceholder")}
+                  disabled={isLoading}
+                  autoComplete="new-password"
+                />
+                {errors.password && (
+                  <p className="mt-1.5 text-sm text-red-500">
+                    {errors.password}
+                  </p>
+                )}
+              </div>
 
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-foreground mb-1.5"
-              >
-                {t("phone")}
-              </label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
-                placeholder={t("phonePlaceholder")}
-                disabled={isLoading}
-                autoComplete="tel"
-              />
-              {errors.phone && (
-                <p className="mt-1.5 text-sm text-red-500">{errors.phone}</p>
-              )}
+              <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-foreground mb-1.5"
+                >
+                  {t("confirmPassword")}
+                </label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  placeholder={t("confirmPasswordPlaceholder")}
+                  disabled={isLoading}
+                  autoComplete="new-password"
+                />
+                {errors.confirmPassword && (
+                  <p className="mt-1.5 text-sm text-red-500">
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </div>
             </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-foreground mb-1.5"
-              >
-                {t("password")}
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
-                placeholder={t("passwordPlaceholder")}
-                disabled={isLoading}
-                autoComplete="new-password"
-              />
-              {errors.password && (
-                <p className="mt-1.5 text-sm text-red-500">{errors.password}</p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-foreground mb-1.5"
-              >
-                {t("confirmPassword")}
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
-                placeholder={t("confirmPasswordPlaceholder")}
-                disabled={isLoading}
-                autoComplete="new-password"
-              />
-              {errors.confirmPassword && (
-                <p className="mt-1.5 text-sm text-red-500">
-                  {errors.confirmPassword}
-                </p>
-              )}
-            </div>
-
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 px-4 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full py-2.5 px-4 cursor-pointer rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isLoading ? t("creatingAccount") : t("signUp")}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
+          <button className="mt-6 text-center pointer">
+            <p className="text-sm text-muted-foreground pointer">
               {t("alreadyHaveAccount")}{" "}
               <Link
                 href="/login"
@@ -229,7 +227,7 @@ export default function SignupPage() {
                 {t("signIn")}
               </Link>
             </p>
-          </div>
+          </button>
         </div>
       </div>
     </div>
