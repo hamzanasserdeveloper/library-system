@@ -8,52 +8,39 @@ import {
   useCallback,
   ReactNode,
 } from "react";
-import { User } from "@/types";
-import { userService } from "@/services/user.service";
+import type {
+  AuthContextValue,
+  AuthUser,
+  LoginCredentials,
+  RegisterData,
+  User,
+} from "@/types";
 import { CookieKeys } from "@/constants/SystemConfig";
+import { Endpoints } from "@/constants/Endpoints";
+import { api } from "@/services/client";
+import { createApiError } from "@/services/core";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { getCookieByKey, removeCookie } from "@/utils/cookies/ClientSide";
+import {
+  getCookieByKey,
+  removeCookie,
+  setCookie,
+} from "@/utils/cookies/ClientSide";
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
+const AuthContext = createContext<AuthContextValue | null>(null);
+
+function toAuthUser(user: User): AuthUser {
+  return {
+    id: user.id,
+    fullName: user.fullName,
+    email: user.email,
+    phone: user.phone,
+    membershipNumber: user.membershipNumber,
+    status: user.status,
+  };
 }
-
-export interface RegisterData {
-  fullName: string;
-  email: string;
-  phone: string;
-  password: string;
-}
-
-interface AuthContextValue {
-  user: User | null;
-  isLoading: boolean;
-  login: (credentials: { email: string; password: string }) => Promise<void>;
-  register: (data: {
-    fullName: string;
-    email: string;
-    phone: string;
-    password: string;
-  }) => Promise<void>;
-  logout: () => void;
-}
-
-const AuthContext = createContext<{
-  user: User | null;
-  isLoading: boolean;
-  login: (credentials: { email: string; password: string }) => Promise<void>;
-  register: (data: {
-    fullName: string;
-    email: string;
-    phone: string;
-    password: string;
-  }) => Promise<void>;
-  logout: () => void;
-} | null>(null);
 
 function AuthProviderInner({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -61,8 +48,10 @@ function AuthProviderInner({ children }: { children: ReactNode }) {
       try {
         const userId = getCookieByKey(CookieKeys.UserId);
         if (userId) {
-          const result = await userService.getUserById(Number(userId));
-          if (result.data) setUser(result.data);
+          const currentUser = await api.get<User>(
+            Endpoints.auth.me(Number(userId)),
+          );
+          setUser(toAuthUser(currentUser));
         }
       } catch {
         // Ignore hydration errors
@@ -73,38 +62,49 @@ function AuthProviderInner({ children }: { children: ReactNode }) {
     hydrate();
   }, []);
 
-  const login = useCallback(
-    async (credentials: { email: string; password: string }) => {
-      setIsLoading(true);
-      try {
-        const result = await userService.login(credentials);
-        if (result.error) throw new Error(result.error.message);
-        setUser(result.data!);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [],
-  );
+  const login = useCallback(async (credentials: LoginCredentials) => {
+    setIsLoading(true);
+    try {
+      const users = await api.get<User[]>(
+        Endpoints.users.byEmail(credentials.email),
+      );
+      const found = users.find(
+        (candidate) => candidate.email === credentials.email,
+      );
 
-  const register = useCallback(
-    async (data: {
-      fullName: string;
-      email: string;
-      phone: string;
-      password: string;
-    }) => {
-      setIsLoading(true);
-      try {
-        const result = await userService.register(data);
-        if (result.error) throw new Error(result.error.message);
-        setUser(result.data!);
-      } finally {
-        setIsLoading(false);
+      if (!found || found.password !== credentials.password) {
+        throw createApiError("Invalid email or password", 401);
       }
-    },
-    [],
-  );
+
+      setCookie(CookieKeys.UserId, String(found.id));
+      setCookie(CookieKeys.Token, "fake-jwt-token");
+
+      setUser(toAuthUser(found));
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const register = useCallback(async (data: RegisterData) => {
+    setIsLoading(true);
+    try {
+      const existing = await api.get<User[]>(
+        Endpoints.users.byEmail(data.email),
+      );
+      if (existing.length > 0) {
+        throw createApiError("Email already registered", 400);
+      }
+
+      const created = await api.post<User>(Endpoints.auth.register, data);
+
+      setCookie(CookieKeys.UserId, String(created.id));
+      setCookie(CookieKeys.Token, "fake-jwt-token");
+
+      setUser(toAuthUser(created));
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   const logout = useCallback(() => {
     removeCookie(CookieKeys.UserId);
@@ -125,7 +125,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <ErrorBoundary
       fallback={
         <div className="flex min-h-screen items-center justify-center bg-background">
-          Authentication error. Please refresh.
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-[30px] font-bold">
+              {" "}
+              We had an error pls try again
+            </p>
+            <button
+              className="bg-primary px-6 py-2 rounded-full transition cursor-pointer hover:opacity-80"
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              Reload
+            </button>
+          </div>
         </div>
       }
     >

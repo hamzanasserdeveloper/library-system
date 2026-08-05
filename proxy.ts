@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./src/i18n/routing";
 
@@ -22,7 +22,7 @@ function isPublic(pathname: string): boolean {
   return PUBLIC_PATHS.some((path) => pathname.startsWith(path));
 }
 
-export default function middleware(request: Request) {
+export default function middleware(request: NextRequest) {
   const response = intlMiddleware(request);
   const pathname = new URL(request.url).pathname;
 

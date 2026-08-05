@@ -14,7 +14,13 @@
     "cta": "تصفح الكتب",
     "featureBooks": "الفهرس",
     "featureUsers": "الأعضاء",
-    "featureBorrow": "الاستعارة"
+    "featureBorrow": "الاستعارة",
+    "popular": {
+      "kicker": "متميز",
+      "title": "الكتب الشعبية",
+      "subtitle": "أشهر العناوين في مجموعتنا",
+      "viewAll": "عرض كل الكتب"
+    }
   },
   "nav": {
     "dashboard": "لوحة التحكم",
@@ -86,13 +92,17 @@
     "copiesAvailable": "{count} من {total} نسخ متاحة",
     "noCopies": "لا توجد نسخ متاحة",
     "notFound": "الكتاب غير موجود",
+    "openDetails": "عرض تفاصيل {title}",
     "empty": "لا توجد كتب تطابق بحثك.",
-    "unknownAuthor": "مؤلف غير معروف"
+    "unknownAuthor": "مؤلف غير معروف",
+    "borrowedOn": "تمت الإعارة في {date}",
+    "due": "موعد الإرجاع {date}"
   },
   "bookDetails": {
     "back": "العودة إلى الفهرس",
     "about": "عن هذا الكتاب",
     "details": "تفاصيل الكتاب",
+    "viewFullDetails": "عرض التفاصيل كاملة",
     "borrowSuccess": "تم استعارة الكتاب بنجاح",
     "borrowError": "تعذّر استعارة هذا الكتاب"
   },

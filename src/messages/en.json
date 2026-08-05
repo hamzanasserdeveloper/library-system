@@ -14,7 +14,13 @@
     "cta": "Browse books",
     "featureBooks": "Catalog",
     "featureUsers": "Members",
-    "featureBorrow": "Borrowing"
+    "featureBorrow": "Borrowing",
+    "popular": {
+      "kicker": "Featured",
+      "title": "Popular Books",
+      "subtitle": "The most loved titles in our collection",
+      "viewAll": "View all books"
+    }
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -86,13 +92,17 @@
     "copiesAvailable": "{count} of {total} copies available",
     "noCopies": "No copies available",
     "notFound": "Book not found",
+    "openDetails": "Open details for {title}",
     "empty": "No books match your search.",
-    "unknownAuthor": "Unknown author"
+    "unknownAuthor": "Unknown author",
+    "borrowedOn": "Borrowed on {date}",
+    "due": "Due {date}"
   },
   "bookDetails": {
     "back": "Back to catalog",
     "about": "About this book",
     "details": "Book details",
+    "viewFullDetails": "View full details",
     "borrowSuccess": "Book borrowed successfully",
     "borrowError": "Unable to borrow this book"
   },

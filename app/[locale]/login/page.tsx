@@ -1,17 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useToastHelpers } from "@/hooks/useToast";
-import { userService } from "@/services/user.service";
+import { useAuth } from "@/context";
+import type { ApiError } from "@/types";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations("auth");
   const { error: toastError, success: toastSuccess } = useToastHelpers();
+  const { login } = useAuth();
 
   const redirect = searchParams.get("redirect") || "/";
   const [email, setEmail] = useState("");
@@ -37,16 +39,13 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      const result = await userService.login({ email, password });
-      if (result.error) {
-        toastError(t("error"), result.error.message);
-        return;
-      }
+      await login({ email, password });
       toastSuccess(t("success"), t("loginSuccess"));
       router.push(redirect);
       router.refresh();
-    } catch (_err) {
-      toastError(t("error"), t("unexpectedError"));
+    } catch (error) {
+      const apiError = error as ApiError;
+      toastError(t("error"), apiError.message ?? t("unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -135,5 +134,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

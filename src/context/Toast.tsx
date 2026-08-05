@@ -6,6 +6,7 @@ import {
   useCallback,
 } from "react";
 import { ToastType, ToastPosition } from "@/constants/SystemConfig";
+import type { ShowToastOptions } from "@/types/toast";
 import { generateId } from "@/helper";
 
 export interface Toast {
@@ -53,14 +54,6 @@ interface ToastContextValue {
   showToast: (options: ShowToastOptions) => string;
   dismissToast: (id: string) => void;
   dismissAll: () => void;
-}
-
-export interface ShowToastOptions {
-  title: string;
-  message: string;
-  type: ToastType;
-  duration?: number;
-  position?: ToastPosition;
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null);

@@ -145,6 +145,10 @@ Display user-friendly toasts for: unavailable book, network error, server error,
    - Shared UI primitives live in `src/components/`
    - Import via `@/components/`
    - All client components marked `'use client'` at top
+6. **Type Safe**
+   - Do not use any type
+   - generic types to not repeat our self
+   - extends to not repeat our self
 
 ---
 

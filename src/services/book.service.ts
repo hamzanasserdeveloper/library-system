@@ -1,66 +1,79 @@
-import { baseFetch } from "./api-client";
-import { HttpMethod } from "@/constants/SystemConfig";
+import { cacheTag } from "next/cache";
 import { Endpoints } from "@/constants/Endpoints";
-import { PaginatedResponse, Book } from "@/types";
+import type { BaseListResponse, Book, Borrowing, QueryParams } from "@/types";
+import { ssrApi } from "./server";
+import seed from "../../db.json";
 
-export interface ListBooksParams {
-  _page?: number;
-  _per_page?: number;
-  title?: string;
-  author?: string;
-  isbn?: string;
-  category?: string;
-  status?: "available" | "checked-out";
-  _sort?: string;
-  _order?: "asc" | "desc";
+function normalizeBook(book: Book): Book {
+  return { ...book, id: Number(book.id) };
 }
 
-export const bookService = {
-  async getBooks(params: ListBooksParams = {}) {
-    return baseFetch<PaginatedResponse<Book>, never, ListBooksParams>({
-      endpoint: Endpoints.books.list,
-      method: HttpMethod.GET,
-      params: {
-        _page: params._page || 1,
-        _per_page: params._per_page || 10,
-        title: params.title,
-        author: params.author,
-        isbn: params.isbn,
-        category: params.category,
-        status: params.status,
-        _sort: params._sort,
-        _order: params._order,
-      },
-    });
-  },
+function normalizeBorrowing(borrowing: Borrowing): Borrowing {
+  return {
+    ...borrowing,
+    id: Number(borrowing.id),
+    bookId: Number(borrowing.bookId),
+    userId: Number(borrowing.userId),
+  };
+}
 
-  async getBook(id: number) {
-    return baseFetch<Book, never, never>({
-      endpoint: Endpoints.books.detail(id),
-      method: HttpMethod.GET,
-    });
-  },
+function toPage<T>(
+  response: BaseListResponse<T> | T[],
+): BaseListResponse<T> {
+  if (Array.isArray(response)) {
+    return {
+      data: response,
+      first: 1,
+      prev: null,
+      next: null,
+      last: 1,
+      pages: 1,
+      items: response.length,
+    };
+  }
+  return response;
+}
 
-  async createBook(data: Omit<Book, "id">) {
-    return baseFetch<Book, Omit<Book, "id">>({
-      endpoint: Endpoints.books.create,
-      method: HttpMethod.POST,
-      body: data,
-    });
-  },
+export function getBookSlugs(): string[] {
+  return seed.books.map((book) => book.slug);
+}
 
-  async updateBook(id: number, data: Partial<Book>) {
-    return baseFetch<Book, Partial<Book>>({
-      endpoint: Endpoints.books.update(id),
-      method: HttpMethod.PATCH,
-      body: data,
-    });
-  },
+export async function getBooks(
+  params: QueryParams = {},
+): Promise<BaseListResponse<Book>> {
+  "use cache";
+  cacheTag("library");
+  const response = await ssrApi.get<BaseListResponse<Book> | Book[]>(
+    Endpoints.books.list,
+    { _page: 1, _per_page: 100, ...params },
+  );
+  const page = toPage(response);
+  return { ...page, data: page.data.map(normalizeBook) };
+}
 
-  async deleteBook(id: number) {
-    return baseFetch<void, never>({
-      endpoint: Endpoints.books.delete(id),
-      method: HttpMethod.DELETE,
-    });
-  },
-};
+export async function getAllBooks(): Promise<Book[]> {
+  "use cache";
+  cacheTag("library");
+  const response = await getBooks();
+  return response.data;
+}
+
+export async function getBookBySlug(slug: string): Promise<Book | null> {
+  "use cache";
+  cacheTag("library");
+  const books = await getAllBooks();
+  return books.find((book) => book.slug === slug) ?? null;
+}
+
+export async function getBorrowings(
+  params: QueryParams = {},
+): Promise<Borrowing[]> {
+  "use cache";
+  cacheTag("library");
+  const response = await ssrApi.get<BaseListResponse<Borrowing> | Borrowing[]>(
+    Endpoints.borrowings.list,
+    { _page: 1, _per_page: 50, ...params },
+  );
+  const page = toPage(response);
+  return page.data.map(normalizeBorrowing);
+}

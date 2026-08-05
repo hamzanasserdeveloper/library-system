@@ -3,5 +3,9 @@ export { ThemeProvider, useTheme } from "./Theme";
 export { Providers } from "./Providers";
 export { ErrorBoundary } from "./ErrorBoundary";
 export { ToastProviderWrapper } from "@/components/ToastProviderWrapper";
+export {
+  BookModalProvider,
+  useBookModal,
+} from "@/components/BookModal";
 export { useToast, useToastHelpers } from "@/hooks/useToast";
-export type { ShowToastOptions } from "@/context/Toast";
+export type { ShowToastOptions } from "@/types/toast";

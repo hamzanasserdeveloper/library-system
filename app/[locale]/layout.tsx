@@ -7,10 +7,9 @@ import { routing } from "@/i18n/routing";
 import type { Locale } from "@/i18n/routing";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ThemeInitScript } from "@/components/ThemeInitScript";
 import { Providers } from "@/context";
-import Script from "next/script";
 import "../globals.css";
-import { CookieKeys } from "@/constants/SystemConfig";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,24 +20,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-const themeScript = `
-  (function () {
-    try {
-      var stored = localStorage.getItem('${CookieKeys.Theme}');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var theme =
-        stored === 'light' || stored === 'dark'
-          ? stored
-          : prefersDark
-            ? 'dark'
-            : 'light';
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
-    } catch (e) {}
-  })();
-`;
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -90,9 +71,7 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
-        <Script id="theme-init" strategy="beforeInteractive">
-          {themeScript}
-        </Script>
+        <ThemeInitScript />
         <Providers>
           <NextIntlClientProvider>
             <Header />

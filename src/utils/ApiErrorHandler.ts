@@ -1,12 +1,5 @@
 import axios from "axios";
-
-export interface ApiError {
-  name: "ApiError";
-  message: string;
-  status?: number;
-  code?: string;
-  data?: unknown;
-}
+import type { ApiError } from "@/types";
 
 const STATUS_MESSAGES: Record<number, string> = {
   400: "Bad Request",

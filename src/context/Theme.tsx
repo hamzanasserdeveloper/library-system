@@ -5,7 +5,6 @@ import {
   useContext,
   useEffect,
   useSyncExternalStore,
-  ReactNode,
 } from "react";
 import { getCookieByKey, setCookie } from "@/utils/cookies/ClientSide";
 import { CookieKeys } from "@/constants/SystemConfig";
@@ -51,12 +50,6 @@ function createThemeStore() {
 }
 
 const themeStore = createThemeStore();
-
-interface ThemeContextValue {
-  theme: Theme;
-  toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
-}
 
 const ThemeContext = createContext<{
   theme: Theme;

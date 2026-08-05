@@ -16,6 +16,7 @@ export enum HttpMethod {
   PUT = "PUT",
   PATCH = "PATCH",
   DELETE = "DELETE",
+  PostForm = "POST_FORM",
 }
 
 export enum ToastType {

@@ -4,13 +4,14 @@ import { ReactNode } from "react";
 import { ThemeProvider } from "./Theme";
 import { AuthProvider } from "./Auth";
 import { ToastProviderWrapper } from "@/components/ToastProviderWrapper";
+import { BookModalProvider } from "@/components/BookModal";
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
       <AuthProvider>
         <ToastProviderWrapper>
-          {children}
+          <BookModalProvider>{children}</BookModalProvider>
         </ToastProviderWrapper>
       </AuthProvider>
     </ThemeProvider>

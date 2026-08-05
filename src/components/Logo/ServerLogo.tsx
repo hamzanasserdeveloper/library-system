@@ -1,6 +1,6 @@
 import Image from "next/image";
 import logo from "@/assets/logo.png";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 export interface LogoPropsType {
   quality?: number;

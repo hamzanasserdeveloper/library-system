@@ -1,18 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useToastHelpers } from "@/hooks/useToast";
-import { userService } from "@/services/user.service";
-import Logo from "@/components/Logo";
+import { useAuth } from "@/context";
+import type { ApiError } from "@/types";
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations("auth");
   const { error: toastError, success: toastSuccess } = useToastHelpers();
+  const { register } = useAuth();
 
   const redirect = searchParams.get("redirect") || "/";
   const [formData, setFormData] = useState({
@@ -58,21 +59,18 @@ export default function SignupPage() {
 
     setIsLoading(true);
     try {
-      const result = await userService.register({
+      await register({
         fullName: formData.fullName,
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
       });
-      if (result.error) {
-        toastError(t("error"), result.error.message);
-        return;
-      }
       toastSuccess(t("success"), t("registerSuccess"));
       router.push(redirect);
       router.refresh();
-    } catch (_err) {
-      toastError(t("error"), t("unexpectedError"));
+    } catch (error) {
+      const apiError = error as ApiError;
+      toastError(t("error"), apiError.message ?? t("unexpectedError"));
     } finally {
       setIsLoading(false);
     }
@@ -231,5 +229,13 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignupForm />
+    </Suspense>
   );
 }
