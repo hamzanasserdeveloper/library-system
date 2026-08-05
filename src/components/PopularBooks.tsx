@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { safeResult } from "@/services/core";
 import { getBooks, getBorrowings } from "@/services/book.service";
-import { BookCard } from "@/components/BookCard";
+import { BookCard } from "@/components/Book";
 import { Link } from "@/i18n/navigation";
 import type { Borrowing } from "@/types";
 
@@ -9,7 +9,7 @@ export default async function PopularBooks() {
   const t = await getTranslations("home");
 
   const [booksResult, borrowingsResult] = await Promise.all([
-    safeResult(getBooks({ _page: 1, _per_page: 4 })),
+    safeResult(getBooks({ _page: 1, _per_page: 6 })),
     safeResult(getBorrowings()),
   ]);
 
@@ -49,7 +49,7 @@ export default async function PopularBooks() {
         </Link>
       </div>
 
-      <div className="mt-12 grid grid-cols-2 place-items-center gap-x-3 gap-y-14 sm:gap-x-6 lg:gap-x-10">
+      <div className="mt-12 grid grid-cols-3 place-items-center gap-x-3 gap-y-14 sm:gap-x-6 lg:gap-x-10">
         {books.map((book, index) => (
           <BookCard
             key={book.id}

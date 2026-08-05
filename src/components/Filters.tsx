@@ -87,7 +87,7 @@ export function Filters({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <div className="relative min-w-[220px] flex-1">
+      <div className="relative w-full max-w-[300px]">
         <label className="sr-only" htmlFor="book-search">
           {tBooks("searchPlaceholder")}
         </label>
@@ -110,32 +110,57 @@ export function Filters({
           value={search}
           onChange={(event) => handleSearchChange(event.target.value)}
           placeholder={tBooks("searchPlaceholder")}
-          className="w-full rounded-full border border-input bg-card py-2.5 pe-4 ps-10 text-sm text-foreground placeholder:text-muted-foreground transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="w-full rounded-full border border-input bg-surface py-2.5 pe-10 ps-10 text-sm text-foreground shadow-sm outline-none transition placeholder:text-muted-foreground hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
+        {pending && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-primary"
+          />
+        )}
       </div>
 
       <div className="relative">
         <label className="sr-only" htmlFor="book-status">
           {tBooks("statusFilter")}
         </label>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+          aria-hidden
+        >
+          <path
+            fillRule="evenodd"
+            d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.591l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z"
+            clipRule="evenodd"
+          />
+        </svg>
         <select
           id="book-status"
           value={status}
           onChange={(event) => handleStatusChange(event.target.value)}
-          className="rounded-full border border-input bg-card px-4 py-2.5 text-sm text-foreground transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="cursor-pointer appearance-none rounded-full border border-input bg-surface py-2.5 ps-10 pe-10 text-sm text-foreground shadow-sm outline-none transition hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/20"
         >
           <option value="all">{tBooks("allStatuses")}</option>
           <option value="available">{tStatus("available")}</option>
           <option value="checked-out">{tStatus("checkedOut")}</option>
         </select>
-      </div>
-
-      {pending && (
-        <span
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className="pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
           aria-hidden
-          className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-primary"
-        />
-      )}
+        >
+          <path
+            fillRule="evenodd"
+            d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { safeResult } from "@/services/core";
 import { getBooks, getBorrowings } from "@/services/book.service";
 import type { Borrowing } from "@/types";
-import { BookCard } from "@/components/BookCard";
+import { BookCard } from "@/components/Book";
 import Pagination from "./pagination";
 
 interface BooksGridProps {

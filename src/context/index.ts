@@ -6,6 +6,6 @@ export { ToastProviderWrapper } from "@/components/ToastProviderWrapper";
 export {
   BookModalProvider,
   useBookModal,
-} from "@/components/BookModal";
+} from "@/components/Book";
 export { useToast, useToastHelpers } from "@/hooks/useToast";
 export type { ShowToastOptions } from "@/types/toast";

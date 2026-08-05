@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import type { Locale } from "@/i18n/routing";
-import { BooksToolbar } from "./components/books-toolbar";
-import BooksGrid from "./components/books-grid";
-import { BooksSkeleton } from "./components/books-skeleton";
+import { BooksToolbar } from "./_components/books-toolbar";
+import BooksGrid from "./_components/books-grid";
+import { BooksSkeleton } from "./_components/books-skeleton";
 
 interface BooksPageProps {
   params: Promise<{ locale: string }>;

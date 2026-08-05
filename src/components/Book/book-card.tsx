@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import type { Book, Borrowing } from "@/types";
-import { useBookModal } from "@/components/BookModal";
+import { useBookModal } from "./book-modal";
 
 interface BookCardProps {
   book: Book;

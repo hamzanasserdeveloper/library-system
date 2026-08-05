@@ -37,6 +37,9 @@ export async function generateMetadata({
   });
 
   return {
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3001",
+    ),
     title: { default: t("title"), template: `%s | ${t("titleSuffix")}` },
     description: t("description"),
     alternates: {
@@ -72,15 +75,15 @@ export default async function LocaleLayout({
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
         <ThemeInitScript />
-        <Providers>
-          <NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <Providers>
             <Header />
             <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8 sm:px-6">
               {children}
             </main>
             <Footer />
-          </NextIntlClientProvider>
-        </Providers>
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

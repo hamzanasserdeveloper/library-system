@@ -14,20 +14,11 @@ const BASE_URL = API_CONFIG.BASE_URL;
 
 let abortController = new AbortController();
 
-async function getAuthToken(isServer: boolean) {
-  // return isServer
-  //   ? await getServerCookie(CookieKeys.Token)
-  //   :
+async function getAuthToken() {
   getCookieByKey(CookieKeys.Token);
 }
 
-async function logout(isServer: boolean) {
-  // if (isServer) {
-  //   await removeServerCookie(CookieKeys.Token);
-  //   await removeServerCookie(CookieKeys.UserId);
-  //   return;
-  // }
-
+async function logout() {
   removeCookie(CookieKeys.Token);
   removeCookie(CookieKeys.UserId);
 
@@ -37,7 +28,7 @@ async function logout(isServer: boolean) {
   }
 }
 
-function createAxios(isServer = false) {
+function createAxios() {
   const instance = axios.create({
     baseURL: BASE_URL,
     timeout: API_TIMEOUT,
@@ -50,7 +41,7 @@ function createAxios(isServer = false) {
     async (config: InternalAxiosRequestConfig) => {
       config.signal = abortController.signal;
 
-      const token = getAuthToken(isServer);
+      const token = getAuthToken();
 
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -66,7 +57,7 @@ function createAxios(isServer = false) {
 
     async (error: AxiosError) => {
       if (error.response?.status === 401) {
-        await logout(isServer);
+        await logout();
       }
 
       return Promise.reject(mapApiError(error));
@@ -76,9 +67,9 @@ function createAxios(isServer = false) {
   return instance;
 }
 
-export const axiosClient = createAxios(false);
+export const axiosClient = createAxios();
 
-export const axiosServer = createAxios(true);
+export const axiosServer = createAxios();
 
 export const getAxiosInstance = (server = false) =>
   server ? axiosServer : axiosClient;
