@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ToastType, ToastPosition } from "@/constants/SystemConfig";
 import { mergeClasses } from "@/utils/MergeClasses";
+import { Link } from "@/i18n/navigation";
 import { Toast } from "@/context/Toast";
 
 const typeStyles: Record<ToastType, string> = {
@@ -146,6 +147,15 @@ export function ToastComponent({ toast, onDismiss }: ToastProps) {
         )}
         {toast.message && (
           <p className="mt-1 text-sm opacity-90">{toast.message}</p>
+        )}
+        {toast.action && (
+          <Link
+            href={toast.action.href}
+            onClick={handleClose}
+            className="mt-2 inline-flex items-center gap-1 text-sm font-semibold underline underline-offset-2"
+          >
+            {toast.action.label}
+          </Link>
         )}
       </div>
       <div className="flex flex-col items-start gap-2">

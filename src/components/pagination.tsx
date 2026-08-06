@@ -4,23 +4,15 @@ import { Link } from "@/i18n/navigation";
 interface PaginationProps {
   currentPage: number;
   pages: number;
-  search: string;
-  status: string;
-}
-
-function buildHref(page: number, search: string, status: string) {
-  const params = new URLSearchParams();
-  if (search) params.set("q", search);
-  if (status && status !== "all") params.set("status", status);
-  params.set("page", String(page));
-  return `/books?${params.toString()}`;
+  buildHref: (page: number) => string;
+  label?: string;
 }
 
 export default async function Pagination({
   currentPage,
   pages,
-  search,
-  status,
+  buildHref,
+  label,
 }: PaginationProps) {
   const t = await getTranslations("common");
   const pageNumbers = Array.from({ length: pages }, (_, index) => index + 1);
@@ -28,9 +20,12 @@ export default async function Pagination({
   const isLast = currentPage === pages;
 
   return (
-    <nav aria-label={t("page")} className="flex items-center justify-center gap-2">
+    <nav
+      aria-label={label ?? t("page")}
+      className="flex items-center justify-center gap-2"
+    >
       <Link
-        href={buildHref(Math.max(1, currentPage - 1), search, status)}
+        href={buildHref(Math.max(1, currentPage - 1))}
         aria-disabled={isFirst}
         aria-label={t("previous")}
         className={`flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-foreground transition hover:border-primary/50 hover:text-primary ${
@@ -57,7 +52,7 @@ export default async function Pagination({
         return (
           <Link
             key={number}
-            href={buildHref(number, search, status)}
+            href={buildHref(number)}
             aria-current={isActive ? "page" : undefined}
             className={`flex h-9 min-w-9 items-center justify-center rounded-full px-2 text-sm font-semibold transition ${
               isActive
@@ -71,7 +66,7 @@ export default async function Pagination({
       })}
 
       <Link
-        href={buildHref(Math.min(pages, currentPage + 1), search, status)}
+        href={buildHref(Math.min(pages, currentPage + 1))}
         aria-disabled={isLast}
         aria-label={t("next")}
         className={`flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-foreground transition hover:border-primary/50 hover:text-primary ${

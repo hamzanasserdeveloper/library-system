@@ -6,6 +6,7 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
 import { useAuth } from "@/context";
 import Logo from "./Logo";
+import { Avatar } from "./avatar";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -50,10 +51,16 @@ export function Header() {
           {isLoading ? (
             <div className="h-8 w-8 animate-pulse bg-muted rounded-full" />
           ) : user ? (
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-muted-foreground hidden sm:block">
-                {user.fullName}
-              </span>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/profile"
+                className="flex items-center gap-2 rounded-full py-0.5 pe-1 ps-1 transition hover:bg-muted sm:pe-3"
+              >
+                <Avatar name={user.fullName} size="sm" />
+                <span className="hidden text-sm font-medium text-foreground sm:block">
+                  {user.fullName}
+                </span>
+              </Link>
               <button
                 onClick={logout}
                 className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"

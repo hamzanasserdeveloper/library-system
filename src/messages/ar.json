@@ -27,6 +27,7 @@
     "books": "الكتب",
     "users": "المستخدمون",
     "borrowings": "الاستعارات",
+    "profile": "الملف الشخصي",
     "language": "اللغة"
   },
   "common": {
@@ -211,5 +212,22 @@
     "signIn": "تسجيل الدخول",
     "passwordMinLength": "كلمة السر يجب ان تكون 8 محارف او اكثر",
     "logout": "تسجيل الخروج"
+  },
+  "profile": {
+    "title": "ملفي الشخصي",
+    "subtitle": "ملفك في المكتبة والكتب المُعارة",
+    "currentlyBorrowed": "مُعار حالياً",
+    "returned": "مُعاد",
+    "totalBorrowed": "إجمالي المُعار",
+    "borrowedBooks": "كتبي المُعارة",
+    "borrowedBooksSubtitle": "{count, plural, =1 {كتاب واحد مُعار حالياً} other {# كتب مُعارة حالياً}}",
+    "empty": "لا توجد كتب مُعارة بعد",
+    "emptyHint": "تصفح الفهرس واستعر أول كتاب لك.",
+    "viewMyProfile": "عرض ملفي",
+    "alreadyBorrowed": "لقد استعرت هذا الكتاب بالفعل.",
+    "borrowed": "مُعار",
+    "confirmMessage": "استعارة هذا الكتاب؟ موعد الإرجاع {date}.",
+    "returnConfirmTitle": "إرجاع الكتاب",
+    "returnConfirmMessage": "إرجاع «{title}» إلى المكتبة؟"
   }
 }

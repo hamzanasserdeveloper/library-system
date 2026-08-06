@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Book } from "@/types";
+import { BorrowButton } from "./borrow-button";
 
 interface BookDetailsPanelProps {
   book: Book;
@@ -69,11 +70,12 @@ export function BookDetailsPanel({
           : tBooks("noCopies")}
       </p>
 
-      <div className="mt-auto pt-6">
+      <div className="mt-auto flex flex-col gap-2 pt-6">
+        {isAvailable && <BorrowButton book={book} onSuccess={onClose} />}
         <Link
           href={`/books/${book.slug}`}
           onClick={onClose}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/25 transition hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition hover:border-primary/50 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
           {tDetails("viewFullDetails")}
           <svg

@@ -27,6 +27,7 @@
     "books": "Books",
     "users": "Users",
     "borrowings": "Borrowings",
+    "profile": "Profile",
     "language": "Language"
   },
   "common": {
@@ -211,5 +212,22 @@
     "signIn": "Sign in",
     "passwordMinLength": "Password must be at least 8 characters",
     "logout": "Logout"
+  },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Your library profile and borrowed books",
+    "currentlyBorrowed": "Currently borrowed",
+    "returned": "Returned",
+    "totalBorrowed": "Total borrowed",
+    "borrowedBooks": "My Borrowed Books",
+    "borrowedBooksSubtitle": "{count, plural, =1 {1 book currently on loan} other {# books currently on loan}}",
+    "empty": "No borrowed books yet",
+    "emptyHint": "Browse the catalog and borrow your first book.",
+    "viewMyProfile": "View my profile",
+    "alreadyBorrowed": "You already borrowed this book.",
+    "borrowed": "Borrowed",
+    "confirmMessage": "Borrow this book? Due back {date}.",
+    "returnConfirmTitle": "Return book",
+    "returnConfirmMessage": "Return “{title}” to the library?"
   }
 }

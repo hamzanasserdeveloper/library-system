@@ -16,6 +16,7 @@ export interface Toast {
   type: ToastType;
   duration?: number;
   position?: ToastPosition;
+  action?: ShowToastOptions["action"];
   createdAt: number;
 }
 
@@ -81,6 +82,7 @@ export function ToastProvider({
         type: options.type,
         duration: options.duration ?? defaultDuration,
         position: options.position ?? defaultPosition,
+        action: options.action,
         createdAt: Date.now(),
       };
       dispatch({ type: "ADD", payload: toast });

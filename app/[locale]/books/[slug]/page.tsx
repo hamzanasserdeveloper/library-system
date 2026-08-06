@@ -6,9 +6,11 @@ import { Link } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { getBookBySlug, getBookSlugs, getBorrowings } from "@/services/book.service";
 import { safeResult } from "@/services/core";
+import { BorrowButton } from "@/components/Book";
 
 interface BookPageProps {
   params: Promise<{ locale: string; slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export async function generateStaticParams() {
@@ -44,9 +46,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function BookPage({ params }: BookPageProps) {
+export default async function BookPage({ params, searchParams }: BookPageProps) {
   const { locale, slug } = await params;
   setRequestLocale(locale as Locale);
+
+  const sp = await searchParams;
+  const autoOpenBorrow = sp.borrow === "1";
 
   const bookResult = await safeResult(getBookBySlug(slug));
   const book = bookResult.data;
@@ -179,6 +184,10 @@ export default async function BookPage({ params }: BookPageProps) {
               <DetailsRow label={tBooks("pages")} value={`${book.pages}`} />
               <DetailsRow label={tBooks("isbn")} value={book.isbn} />
             </dl>
+
+            {isAvailable && (
+              <BorrowButton book={book} autoOpen={autoOpenBorrow} />
+            )}
 
             {activeBorrowing && (
               <p className="rounded-lg bg-accent/15 px-4 py-2.5 text-sm text-accent-foreground">

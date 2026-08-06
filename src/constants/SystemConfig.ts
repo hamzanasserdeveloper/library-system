@@ -3,6 +3,8 @@ export const API_CONFIG = {
   TIMEOUT: 30000,
 } as const;
 
+export const DUE_DAYS = 14;
+
 export enum CookieKeys {
   Token = "token",
   UserId = "user_id",

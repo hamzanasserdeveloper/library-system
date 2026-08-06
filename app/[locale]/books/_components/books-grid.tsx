@@ -3,7 +3,7 @@ import { safeResult } from "@/services/core";
 import { getBooks, getBorrowings } from "@/services/book.service";
 import type { Borrowing } from "@/types";
 import { BookCard } from "@/components/Book";
-import Pagination from "./pagination";
+import Pagination from "@/components/pagination";
 
 interface BooksGridProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -95,8 +95,13 @@ export default async function BooksGrid({ searchParams }: BooksGridProps) {
         <Pagination
           currentPage={page}
           pages={pages}
-          search={q}
-          status={status}
+          buildHref={(pageNumber) => {
+            const params = new URLSearchParams();
+            if (q) params.set("q", q);
+            if (status && status !== "all") params.set("status", status);
+            params.set("page", String(pageNumber));
+            return `/books?${params.toString()}`;
+          }}
         />
       )}
     </div>
