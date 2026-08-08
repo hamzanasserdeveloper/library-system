@@ -164,7 +164,7 @@ export function ToastComponent({ toast, onDismiss }: ToastProps) {
         </span>
         <button
           onClick={handleClose}
-          className="flex-shrink-0 p-1 rounded-lg hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+          className="flex-shrink-0 p-1 cursor-pointer rounded-lg hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
           aria-label="Dismiss"
         >
           <svg

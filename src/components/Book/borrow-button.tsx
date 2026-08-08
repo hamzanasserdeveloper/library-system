@@ -47,11 +47,14 @@ export function BorrowButton({
 
   const isAvailable = book.status === "available" && book.availableCopies > 0;
   const canBorrow = isAvailable && !disabled;
-  const shouldAutoOpen = autoOpen && user && canBorrow && !autoDismissed && !isPending;
+  const shouldAutoOpen =
+    autoOpen && user && canBorrow && !autoDismissed && !isPending;
   const isDialogOpen = isOpen || shouldAutoOpen;
 
   const loginRedirect = () => {
-    router.push(`/login?redirect=${encodeURIComponent(`${pathname}?borrow=1`)}`);
+    router.push(
+      `/login?redirect=${encodeURIComponent(`${pathname}?borrow=1`)}`,
+    );
   };
 
   const closeDialog = () => {
@@ -75,9 +78,13 @@ export function BorrowButton({
 
       switch (result.status) {
         case "success": {
-          toastSuccess(tDetails("borrowSuccess"), tBooks("due", { date: formatDate(result.dueDate, locale) }), {
-            action: { label: tProfile("viewMyProfile"), href: "/profile" },
-          });
+          toastSuccess(
+            tDetails("borrowSuccess"),
+            tBooks("due", { date: formatDate(result.dueDate, locale) }),
+            {
+              action: { label: tProfile("viewMyProfile"), href: "/profile" },
+            },
+          );
           closeDialog();
           onSuccess?.();
           router.refresh();
@@ -111,7 +118,7 @@ export function BorrowButton({
         type="button"
         onClick={handleClick}
         disabled={!canBorrow || isLoading}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/25 transition hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/25 transition hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

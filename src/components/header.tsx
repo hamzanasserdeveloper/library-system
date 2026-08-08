@@ -1,24 +1,27 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { ThemeToggle } from "./ThemeToggle";
-import { useAuth } from "@/context";
+import { AuthActions } from "./AuthActions";
+import { HeaderMenu } from "./HeaderMenu";
 import Logo from "./Logo";
-import { Avatar } from "./avatar";
+import { mergeClasses } from "@/utils/MergeClasses";
 
 export function Header() {
   const t = useTranslations("nav");
-  const tAuth = useTranslations("auth");
-  const { user, logout, isLoading } = useAuth();
+  const pathname = usePathname();
 
   const links = [
     { href: "/", label: t("dashboard") },
     { href: "/books", label: t("books") },
-    { href: "/users", label: t("users") },
-    { href: "/borrowings", label: t("borrowings") },
   ];
+
+  function isActive(href: string): boolean {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
@@ -34,56 +37,39 @@ export function Header() {
             aria-label="Main navigation"
             className="hidden items-center gap-1 sm:flex"
           >
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {links.map((link) => {
+              const active = isActive(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={mergeClasses(
+                    "rounded-full px-3 py-1.5 text-sm font-medium transition",
+                    active
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <LocaleSwitcher />
-          {isLoading ? (
-            <div className="h-8 w-8 animate-pulse bg-muted rounded-full" />
-          ) : user ? (
+          <div className="hidden items-center gap-2 sm:flex">
+            <ThemeToggle />
+            <LocaleSwitcher />
+            <AuthActions variant="desktop" />
+          </div>
+          <HeaderMenu links={links}>
             <div className="flex items-center gap-2">
-              <Link
-                href="/profile"
-                className="flex items-center gap-2 rounded-full py-0.5 pe-1 ps-1 transition hover:bg-muted sm:pe-3"
-              >
-                <Avatar name={user.fullName} size="sm" />
-                <span className="hidden text-sm font-medium text-foreground sm:block">
-                  {user.fullName}
-                </span>
-              </Link>
-              <button
-                onClick={logout}
-                className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
-              >
-                {tAuth("logout")}
-              </button>
+              <ThemeToggle />
+              <LocaleSwitcher />
             </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/login"
-                className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
-              >
-                {tAuth("signIn")}
-              </Link>
-              <Link
-                href="/signup"
-                className="rounded-full px-3 py-1.5 text-sm font-medium bg-primary text-primary-foreground transition hover:bg-primary/90"
-              >
-                {tAuth("signUp")}
-              </Link>
-            </div>
-          )}
+            <AuthActions variant="mobile" />
+          </HeaderMenu>
         </div>
       </div>
     </header>

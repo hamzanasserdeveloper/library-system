@@ -65,8 +65,7 @@ export function BookCard({ book, borrow, index = 0 }: BookCardProps) {
         </h3>
         <p className="truncate text-sm text-muted-foreground">{book.author}</p>
         <p className="text-xs text-muted-foreground/80">
-          {book.category} · {book.language} · {book.pages}{" "}
-          {tBooks("pages")}
+          {book.category} · {book.language} · {book.pages} {tBooks("pages")}
         </p>
         {isAvailable ? (
           <p className="text-xs font-medium text-success">
@@ -86,7 +85,9 @@ export function BookCard({ book, borrow, index = 0 }: BookCardProps) {
             })}
           </p>
         ) : (
-          <p className="text-xs font-medium text-danger">{tBooks("noCopies")}</p>
+          <p className="text-xs font-medium text-danger">
+            {tBooks("noCopies")}
+          </p>
         )}
       </div>
 

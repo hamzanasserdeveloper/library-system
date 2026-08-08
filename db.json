@@ -1,7 +1,7 @@
 {
   "books": [
     {
-      "id": 1,
+      "id": "1",
       "isbn": "9781781105757",
       "title": "Harry Potter and the Cursed Child",
       "author": "J.K. Rowling",
@@ -13,12 +13,12 @@
       "description": "A stage play set nineteen years after the Battle of Hogwarts, following Harry's son Albus.",
       "cover": "/images/books/Harry_Potter_and_the_Cursed_Child_Special_Rehearsal_Edition_Book_Cover_book.jpg",
       "totalCopies": 5,
-      "availableCopies": 4,
+      "availableCopies": 3,
       "status": "available",
       "slug": "harry-potter-and-the-cursed-child"
     },
     {
-      "id": 2,
+      "id": "2",
       "isbn": "9781416548942",
       "title": "Gone with the Wind",
       "author": "Margaret Mitchell",
@@ -35,7 +35,7 @@
       "slug": "gone-with-the-wind"
     },
     {
-      "id": 3,
+      "id": "3",
       "isbn": "9780007322601",
       "title": "The Dragon",
       "author": "Alex Knight",
@@ -52,7 +52,7 @@
       "slug": "the-dragon"
     },
     {
-      "id": 4,
+      "id": "4",
       "isbn": "9781840226754",
       "title": "The Raven",
       "author": "Edgar Allan Poe",
@@ -64,12 +64,12 @@
       "description": "A haunting collection of Poe's most famous poems, led by the midnight raven's refrain.",
       "cover": "/images/books/raven_book.jpg",
       "totalCopies": 2,
-      "availableCopies": 0,
-      "status": "checked-out",
+      "availableCopies": 1,
+      "status": "available",
       "slug": "the-raven"
     },
     {
-      "id": 5,
+      "id": "5",
       "isbn": "9780593100639",
       "title": "Alias",
       "author": "Nora Whitfield",
@@ -86,7 +86,7 @@
       "slug": "alias"
     },
     {
-      "id": 6,
+      "id": "6",
       "isbn": "9781496423812",
       "title": "Catching the Wind",
       "author": "Melanie Dobson",
@@ -103,7 +103,7 @@
       "slug": "catching-the-wind"
     },
     {
-      "id": 7,
+      "id": "7",
       "isbn": "9781415208589",
       "title": "Child of the River",
       "author": "Irma Joubert",
@@ -120,7 +120,7 @@
       "slug": "child-of-the-river"
     },
     {
-      "id": 8,
+      "id": "8",
       "isbn": "9781538730117",
       "title": "The Court",
       "author": "Daniel Reyes",
@@ -137,7 +137,7 @@
       "slug": "the-court"
     },
     {
-      "id": 9,
+      "id": "9",
       "isbn": "9780800727330",
       "title": "Fatal Exchange",
       "author": "Lisa Harris",
@@ -154,7 +154,7 @@
       "slug": "fatal-exchange"
     },
     {
-      "id": 10,
+      "id": "10",
       "isbn": "9781250209310",
       "title": "It Happens",
       "author": "Sam Lerner",
@@ -171,7 +171,7 @@
       "slug": "it-happens"
     },
     {
-      "id": 11,
+      "id": "11",
       "isbn": "9780316241216",
       "title": "Lisa",
       "author": "Hilda van Stockum",
@@ -188,7 +188,7 @@
       "slug": "lisa"
     },
     {
-      "id": 12,
+      "id": "12",
       "isbn": "9781444780350",
       "title": "The Loney",
       "author": "Andrew Michael Hurley",
@@ -205,7 +205,7 @@
       "slug": "the-loney"
     },
     {
-      "id": 13,
+      "id": "13",
       "isbn": "9780553573411",
       "title": "Memory",
       "author": "Lois Lowry",
@@ -222,7 +222,7 @@
       "slug": "memory"
     },
     {
-      "id": 14,
+      "id": "14",
       "isbn": "9780593186718",
       "title": "The Moment",
       "author": "Shana T. Mays",
@@ -239,7 +239,7 @@
       "slug": "the-moment"
     },
     {
-      "id": 15,
+      "id": "15",
       "isbn": "9780061340642",
       "title": "Run",
       "author": "Ann Patchett",
@@ -256,7 +256,7 @@
       "slug": "run"
     },
     {
-      "id": 16,
+      "id": "16",
       "isbn": "9781542018372",
       "title": "Windswept",
       "author": "Annabelle Carter",
@@ -273,7 +273,7 @@
       "slug": "windswept"
     },
     {
-      "id": 17,
+      "id": "17",
       "isbn": "9781542044640",
       "title": "Wingate",
       "author": "Robert Bailey",
@@ -292,7 +292,7 @@
   ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "fullName": "John Smith",
       "email": "john@example.com",
       "phone": "+962790000001",
@@ -301,7 +301,7 @@
       "password": "password123"
     },
     {
-      "id": 2,
+      "id": "2",
       "fullName": "Sarah Johnson",
       "email": "sarah@example.com",
       "phone": "+962790000002",
@@ -310,27 +310,34 @@
       "password": "password123"
     },
     {
-      "id": 3,
+      "id": "3",
       "fullName": "Michael Brown",
       "email": "michael@example.com",
       "phone": "+962790000003",
       "membershipNumber": "LIB-1003",
       "status": "active",
       "password": "password123"
+    },
+    {
+      "fullName": "Hamza Nasser",
+      "email": "hamza.nasser@beno.com",
+      "phone": "09999999",
+      "password": "12345678",
+      "id": "eS-2gechN1c"
     }
   ],
   "borrowings": [
     {
-      "id": 1,
+      "id": "1",
       "bookId": 4,
       "userId": 1,
       "borrowDate": "2026-07-28",
       "dueDate": "2026-08-11",
-      "returnDate": null,
-      "status": "borrowed"
+      "returnDate": "2026-08-07",
+      "status": "returned"
     },
     {
-      "id": 2,
+      "id": "2",
       "bookId": 5,
       "userId": 2,
       "borrowDate": "2026-07-25",
@@ -339,7 +346,7 @@
       "status": "borrowed"
     },
     {
-      "id": 3,
+      "id": "3",
       "bookId": 8,
       "userId": 3,
       "borrowDate": "2026-07-30",
@@ -348,7 +355,7 @@
       "status": "borrowed"
     },
     {
-      "id": 4,
+      "id": "4",
       "bookId": 9,
       "userId": 1,
       "borrowDate": "2026-07-22",
@@ -357,7 +364,7 @@
       "status": "borrowed"
     },
     {
-      "id": 5,
+      "id": "5",
       "bookId": 12,
       "userId": 2,
       "borrowDate": "2026-07-18",
@@ -366,7 +373,7 @@
       "status": "borrowed"
     },
     {
-      "id": 6,
+      "id": "6",
       "bookId": 15,
       "userId": 3,
       "borrowDate": "2026-08-01",
@@ -375,7 +382,7 @@
       "status": "borrowed"
     },
     {
-      "id": 7,
+      "id": "7",
       "bookId": 17,
       "userId": 1,
       "borrowDate": "2026-07-27",
@@ -384,7 +391,7 @@
       "status": "borrowed"
     },
     {
-      "id": 8,
+      "id": "8",
       "bookId": 6,
       "userId": 2,
       "borrowDate": "2026-06-10",
@@ -393,7 +400,7 @@
       "status": "returned"
     },
     {
-      "id": 9,
+      "id": "9",
       "bookId": 10,
       "userId": 3,
       "borrowDate": "2026-07-05",
@@ -402,13 +409,23 @@
       "status": "returned"
     },
     {
-      "id": 10,
+      "id": "10",
       "bookId": 13,
       "userId": 1,
       "borrowDate": "2026-07-01",
       "dueDate": "2026-07-15",
       "returnDate": "2026-07-10",
       "status": "returned"
+    },
+    {
+      "bookId": 1,
+      "userId": 1,
+      "borrowDate": "2026-08-07",
+      "dueDate": "2026-08-21",
+      "returnDate": null,
+      "status": "borrowed",
+      "id": "SfZ5KxPR9PM"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

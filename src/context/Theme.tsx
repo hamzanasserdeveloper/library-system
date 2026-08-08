@@ -4,7 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
-  useSyncExternalStore,
+  useState,
 } from "react";
 import { getCookieByKey, setCookie } from "@/utils/cookies/ClientSide";
 import { CookieKeys } from "@/constants/SystemConfig";
@@ -58,11 +58,16 @@ const ThemeContext = createContext<{
 } | null>(null);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const theme = useSyncExternalStore(
-    themeStore.subscribe,
-    themeStore.getSnapshot,
-    themeStore.getServerSnapshot,
-  );
+  const [theme, setTheme] = useState<Theme>("light");
+
+  useEffect(() => {
+    const sync = () => setTheme(themeStore.getSnapshot());
+    sync();
+    const unsubscribe = themeStore.subscribe(sync);
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof document !== "undefined") {

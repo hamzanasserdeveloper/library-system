@@ -25,10 +25,10 @@
   "nav": {
     "dashboard": "Dashboard",
     "books": "Books",
-    "users": "Users",
-    "borrowings": "Borrowings",
     "profile": "Profile",
-    "language": "Language"
+    "language": "Language",
+    "openMenu": "Menu",
+    "closeMenu": "Close menu"
   },
   "common": {
     "loading": "Loading...",
@@ -211,7 +211,21 @@
     "alreadyHaveAccount": "Already have an account?",
     "signIn": "Sign in",
     "passwordMinLength": "Password must be at least 8 characters",
-    "logout": "Logout"
+    "logout": "Logout",
+    "welcomeBack": "Welcome back",
+    "brandTagline": "Your library, one click away",
+    "brandPointOne": "Browse thousands of books in seconds",
+    "brandPointTwo": "Borrow and return without the queues",
+    "brandPointThree": "Track your reading history anytime",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "demoTitle": "Demo credentials",
+    "demoEmail": "Email",
+    "demoPassword": "Password",
+    "demoHint": "Use these demo credentials to explore the library:",
+    "useDemoAccount": "Use demo account",
+    "signUpTitle": "Create your account",
+    "signUpTagline": "Join Hamza library and start borrowing today"
   },
   "profile": {
     "title": "My Profile",

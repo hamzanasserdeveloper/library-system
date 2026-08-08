@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./src/i18n/routing";
+import { CookieKeys } from "./src/constants/SystemConfig";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -33,7 +34,7 @@ export default function middleware(request: NextRequest) {
 
   // Check if path is protected
   if (isProtected(pathname)) {
-    const userId = request.headers.get("cookie")?.includes("user_id");
+    const userId = request.headers.get("cookie")?.includes(CookieKeys.UserId);
 
     if (!userId) {
       const locale = pathname.split("/")[1] || "en";

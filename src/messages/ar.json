@@ -25,10 +25,10 @@
   "nav": {
     "dashboard": "لوحة التحكم",
     "books": "الكتب",
-    "users": "المستخدمون",
-    "borrowings": "الاستعارات",
     "profile": "الملف الشخصي",
-    "language": "اللغة"
+    "language": "اللغة",
+    "openMenu": "القائمة",
+    "closeMenu": "إغلاق القائمة"
   },
   "common": {
     "loading": "جارٍ التحميل...",
@@ -211,7 +211,21 @@
     "alreadyHaveAccount": "لديك حساب بالفعل؟",
     "signIn": "تسجيل الدخول",
     "passwordMinLength": "كلمة السر يجب ان تكون 8 محارف او اكثر",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+    "welcomeBack": "مرحباً بعودتك",
+    "brandTagline": "مكتبتك، على بُعد نقرة واحدة",
+    "brandPointOne": "تصفح آلاف الكتب في ثوانٍ",
+    "brandPointTwo": "استعِر وأعد الكتب دون طوابير",
+    "brandPointThree": "تتبّع سجل قراءتك في أي وقت",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "demoTitle": "بيانات تجريبية",
+    "demoEmail": "البريد الإلكتروني",
+    "demoPassword": "كلمة المرور",
+    "demoHint": "استخدم هذه البيانات التجريبية لاستكشاف المكتبة:",
+    "useDemoAccount": "استخدام الحساب التجريبي",
+    "signUpTitle": "أنشئ حسابك",
+    "signUpTagline": "انضم إلى مكتبة حمزة وابدأ الاستعارة اليوم"
   },
   "profile": {
     "title": "ملفي الشخصي",

@@ -14,8 +14,8 @@ const BASE_URL = API_CONFIG.BASE_URL;
 
 let abortController = new AbortController();
 
-async function getAuthToken() {
-  getCookieByKey(CookieKeys.Token);
+function getAuthToken() {
+  return getCookieByKey(CookieKeys.Token);
 }
 
 async function logout() {

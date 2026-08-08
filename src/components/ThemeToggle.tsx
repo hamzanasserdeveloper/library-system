@@ -12,7 +12,7 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       aria-pressed={isDark}
       aria-label="Toggle theme"
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition hover:bg-muted hover:text-foreground"
+      className="flex h-9 w-9 items-center justify-center cursor-pointer rounded-full border border-border bg-card text-muted-foreground transition hover:bg-muted hover:text-foreground"
     >
       {isDark ? (
         <svg

@@ -1,11 +1,12 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { revalidateTag } from "next/cache";
+import { cookies, headers } from "next/headers";
+import { updateTag } from "next/cache";
 import { CookieKeys, DUE_DAYS } from "@/constants/SystemConfig";
 import { Endpoints } from "@/constants/Endpoints";
 import type { BaseListResponse, Book, Borrowing } from "@/types";
 import { SSRFetch } from "./server";
+import { parseCookies } from "@/utils/cookies/Shared";
 
 export type BorrowResult =
   | { status: "success"; dueDate: string }
@@ -33,7 +34,18 @@ function getDueDate(borrowDate: string): string {
 
 async function getCurrentUserId(): Promise<number | null> {
   const cookieStore = await cookies();
-  const raw = cookieStore.get(CookieKeys.UserId)?.value;
+  let raw = cookieStore.get(CookieKeys.UserId)?.value;
+
+  // Fallback: read from request headers
+  if (!raw) {
+    const headersList = await headers();
+    const cookieHeader = headersList.get("cookie");
+    if (cookieHeader) {
+      const parsed = parseCookies(cookieHeader);
+      raw = parsed[CookieKeys.UserId];
+    }
+  }
+
   if (!raw) return null;
   const id = Number(raw);
   return Number.isFinite(id) ? id : null;
@@ -90,7 +102,7 @@ export async function borrowBook(bookId: number): Promise<BorrowResult> {
       { headers: { "Cache-Control": "no-store" } },
     );
 
-    revalidateTag("library", "max");
+    updateTag("library");
     return { status: "success", dueDate };
   } catch {
     return { status: "error" };
@@ -140,7 +152,7 @@ export async function returnBook(borrowingId: number): Promise<ReturnResult> {
       { headers: { "Cache-Control": "no-store" } },
     );
 
-    revalidateTag("library", "max");
+    updateTag("library");
     return { status: "success" };
   } catch {
     return { status: "error" };

@@ -7,7 +7,6 @@ import {
   useEffect,
   useRef,
   useState,
-  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
@@ -45,11 +44,12 @@ export function useBookModal(): BookModalContextValue {
 }
 
 function useIsClient() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
-  );
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setIsClient(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+  return isClient;
 }
 
 function BookModalRoot({
@@ -127,24 +127,10 @@ function BookModalRoot({
 
         <div className="relative flex min-h-[420px] max-h-[85vh] [transform-style:preserve-3d] sm:min-h-[480px]">
           <BookCoverPanel book={book} />
-          <BookDetailsPanel
-            book={book}
-            titleId={titleId}
-            onClose={onClose}
-          />
-          <BookSpine />
+          <BookDetailsPanel book={book} titleId={titleId} onClose={onClose} />
         </div>
       </div>
     </div>,
     document.body,
-  );
-}
-
-function BookSpine() {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-y-0 left-1/2 z-10 w-7 -translate-x-1/2 [background:linear-gradient(90deg,rgba(0,0,0,0.22),rgba(255,255,255,0.4)_45%,rgba(0,0,0,0.15))] shadow-[0_0_16px_rgba(0,0,0,0.3)]"
-    />
   );
 }

@@ -34,7 +34,7 @@ export function LocaleSwitcher() {
             disabled={isPending || isActive}
             onClick={() => switchLocale(option)}
             aria-pressed={isActive}
-            className={`rounded-full px-3 py-1 text-sm font-medium transition ${
+            className={`rounded-full cursor-pointer px-3 py-1 text-sm font-medium transition ${
               isActive
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
