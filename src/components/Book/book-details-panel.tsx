@@ -26,7 +26,7 @@ export function BookDetailsPanel({
   const isAvailable = book.status === "available";
 
   return (
-    <div className="book-open-right relative flex w-1/2 flex-col overflow-y-auto rounded-e-xl bg-card p-5 text-foreground [transform-origin:left] [animation:book-open-right_650ms_cubic-bezier(0.22,1,0.36,1)_140ms_both] rtl:[transform-origin:right] sm:p-7">
+    <div className="relative z-10 flex h-full w-full flex-col overflow-y-auto bg-background/70 p-5 text-foreground backdrop-blur-sm [animation:modal-in_450ms_cubic-bezier(0.22,1,0.36,1)_both] sm:w-1/2 sm:rounded-e-xl sm:bg-card sm:p-7 sm:backdrop-blur-none sm:[transform-origin:left] sm:[animation:book-open-right_650ms_cubic-bezier(0.22,1,0.36,1)_140ms_both] rtl:sm:[transform-origin:right]">
       <div className="flex flex-col gap-1.5">
         <span
           className={`inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white sm:text-[11px] ${

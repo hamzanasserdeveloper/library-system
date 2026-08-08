@@ -52,19 +52,6 @@ export function ReturnButton({
         onClick={() => setIsOpen(true)}
         className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-xs font-semibold text-foreground transition hover:border-danger/50 hover:text-danger"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="h-3.5 w-3.5 rtl:rotate-180"
-          aria-hidden
-        >
-          <path
-            fillRule="evenodd"
-            d="M7.793 2.232a.75.75 0 0 1-.025 1.06L3.622 7.25H10a.75.75 0 0 1 0 1.5H3.622l4.146 3.957a.75.75 0 0 1-1.036 1.085l-5.5-5.25a.75.75 0 0 1 0-1.085l5.5-5.25a.75.75 0 0 1 1.06.025Zm6.413 1.58a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v14.5a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75V3.812Z"
-            clipRule="evenodd"
-          />
-        </svg>
         {tCommon("return")}
       </button>
 

@@ -47,7 +47,7 @@
       "description": "A young keeper bonds with the last living dragon and must defend his realm against ancient foes.",
       "cover": "/images/books/dragon_book.jpg",
       "totalCopies": 3,
-      "availableCopies": 2,
+      "availableCopies": 1,
       "status": "available",
       "slug": "the-dragon"
     },
@@ -499,6 +499,42 @@
       "returnDate": "2026-08-08",
       "status": "returned",
       "id": "YRDPo75HI6c"
+    },
+    {
+      "bookId": "1",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "2rhMcxtso84"
+    },
+    {
+      "bookId": "1",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "kZKpguBy7zk"
+    },
+    {
+      "bookId": "1",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "cM3TQ6vavUQ"
+    },
+    {
+      "bookId": "3",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": null,
+      "status": "borrowed",
+      "id": "FnnC9eywekM"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

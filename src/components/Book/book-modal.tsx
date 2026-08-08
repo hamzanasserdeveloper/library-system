@@ -138,7 +138,7 @@ function BookModalRoot({
           </svg>
         </button>
 
-        <div className="relative flex min-h-[420px] max-h-[85vh] [transform-style:preserve-3d] sm:min-h-[480px]">
+        <div className="relative flex h-[85dvh] w-full overflow-hidden rounded-2xl [transform-style:preserve-3d] sm:h-auto sm:max-h-[85vh] sm:min-h-[480px]">
           <BookCoverPanel book={book} />
           <BookDetailsPanel
             book={book}

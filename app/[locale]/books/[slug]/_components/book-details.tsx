@@ -89,27 +89,27 @@ export async function BookDetails({
       </div>
 
       <div className="mx-auto w-full max-w-4xl [perspective:2200px]">
-        <div className="relative flex min-h-[540px] overflow-hidden rounded-2xl [box-shadow:0_28px_60px_-12px_rgba(0,0,0,0.3)]">
-          <div className="relative w-[42%] bg-[linear-gradient(135deg,#d6cbb0_0%,#b7ab8c_55%,#a29473_100%)] sm:w-[38%]">
+        <div className="relative flex h-[85dvh] overflow-hidden rounded-2xl [box-shadow:0_28px_60px_-12px_rgba(0,0,0,0.3)] sm:h-auto sm:min-h-[540px]">
+          <div className="absolute inset-0 z-0 w-full bg-[linear-gradient(135deg,#d6cbb0_0%,#b7ab8c_55%,#a29473_100%)] sm:relative sm:w-[38%]">
             <Image
               src={book.cover}
               alt={`${book.title} — ${book.author}`}
               fill
               priority
-              sizes="(max-width: 768px) 42vw, 38vw"
-              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 38vw"
+              className="cover-mobile-blur object-cover"
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-y-0 end-0 w-10 bg-gradient-to-l from-black/40 via-black/10 to-transparent rtl:bg-gradient-to-r"
+              className="pointer-events-none absolute inset-y-0 end-0 hidden w-10 bg-gradient-to-l from-black/40 via-black/10 to-transparent rtl:bg-gradient-to-r sm:block"
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-y-0 end-0 w-1.5 bg-black/25"
+              className="pointer-events-none absolute inset-y-0 end-0 hidden w-1.5 bg-black/25 sm:block"
             />
           </div>
 
-          <div className="relative flex w-[58%] flex-col gap-5 bg-card p-5 text-foreground sm:w-[62%] sm:p-9">
+          <div className="relative z-10 flex w-full flex-col gap-5 overflow-y-auto bg-background/70 p-5 text-foreground backdrop-blur-sm sm:w-[62%] sm:bg-card sm:p-9 sm:backdrop-blur-none">
             <div className="flex items-center gap-3">
               <span
                 className={`inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white sm:text-[11px] ${

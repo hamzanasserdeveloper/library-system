@@ -223,6 +223,28 @@ body {
   }
 }
 
+@keyframes loading-logo {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.cover-mobile-blur {
+  filter: blur(5px) brightness(0.8);
+  transform: scale(1.1);
+}
+
+@media (min-width: 640px) {
+  .cover-mobile-blur {
+    filter: none;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,

@@ -101,15 +101,6 @@ export function BookCard({
             {tBooks("noCopies")}
           </p>
         )}
-
-        {myBorrowing || isAvailable ? (
-          <div className="relative z-20 mt-3 w-full">
-            <BorrowOrReturnButton
-              book={book}
-              activeBorrowings={activeBorrowings}
-            />
-          </div>
-        ) : null}
       </div>
 
       <button
