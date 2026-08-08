@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
-import { redirect } from "@/i18n/navigation";
 import { CookieKeys } from "@/constants/SystemConfig";
 import { safeResult } from "@/services/core";
 import { getUserById } from "@/services/user.service";
@@ -28,14 +28,10 @@ export async function ProfileContent({
   const requestedPage = Math.max(1, parseInt(rawPage, 10) || 1);
 
   const cookieStore = await cookies();
-  const rawUserId = cookieStore.get(CookieKeys.UserId)?.value;
-  const userId = rawUserId ? Number(rawUserId) : NaN;
+  const userId = cookieStore.get(CookieKeys.UserId)?.value;
 
-  if (!Number.isFinite(userId) || userId <= 0) {
-    redirect({
-      href: { pathname: "/login", query: { redirect: "/profile" } },
-      locale: locale as Locale,
-    });
+  if (!userId) {
+    redirect(`/${locale}/login?redirect=/profile`);
   }
 
   const [userResult, borrowingsResult, booksResult] = await Promise.all([
@@ -45,13 +41,11 @@ export async function ProfileContent({
   ]);
 
   const user = userResult.data;
+
   if (!user) {
-    redirect({
-      href: { pathname: "/login", query: { redirect: "/profile" } },
-      locale: locale as Locale,
-    });
+    redirect(`/${locale}/login?redirect=/profile`);
   }
-  const profileUser = user!;
+
   const borrowings = borrowingsResult.data?.data ?? [];
   const activeBorrowings = borrowings.filter(
     (borrowing) => borrowing.status === "borrowed",
@@ -77,7 +71,7 @@ export async function ProfileContent({
   return (
     <div className="flex flex-col gap-10">
       <ProfileHero
-        user={profileUser}
+        user={user}
         currentlyBorrowed={activeBorrowings.length}
         returnedCount={returnedCount}
         totalBorrowed={borrowings.length}

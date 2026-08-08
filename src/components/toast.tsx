@@ -139,7 +139,7 @@ export function ToastComponent({ toast, onDismiss }: ToastProps) {
       )}
       role="alert"
       aria-live="polite"
-      style={{ width: "320px" }}
+      style={{ width: "320px", overflow: "hidden" }}
     >
       <div className="flex-1 min-w-0">
         {toast.title && (

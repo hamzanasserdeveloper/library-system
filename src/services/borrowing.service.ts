@@ -10,9 +10,9 @@ import { ssrApi } from "./server";
 function normalizeBorrowing(borrowing: Borrowing): Borrowing {
   return {
     ...borrowing,
-    id: Number(borrowing.id),
-    bookId: Number(borrowing.bookId),
-    userId: Number(borrowing.userId),
+    id: String(borrowing.id),
+    bookId: String(borrowing.bookId),
+    userId: String(borrowing.userId),
   };
 }
 
@@ -34,7 +34,7 @@ function toPage<T>(
 }
 
 export async function getBorrowingsByUser(
-  userId: number,
+  userId: string,
   params: ListBorrowingsParams = {},
 ): Promise<BaseListResponse<Borrowing>> {
   "use cache";

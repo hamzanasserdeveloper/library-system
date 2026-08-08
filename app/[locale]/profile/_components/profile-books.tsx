@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import type { Borrowing, Book } from "@/types";
-import { BookCard, ReturnButton } from "@/components/Book";
+import { BookCard } from "@/components/Book";
 import Pagination from "@/components/pagination";
 import { Link } from "@/i18n/navigation";
 
@@ -72,11 +72,15 @@ export async function ProfileBooks({
 
       <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-3 lg:grid-cols-4">
         {entries.map(({ borrowing, book }, index) => (
-          <div key={borrowing.id} className="flex w-full flex-col items-center gap-3">
-            <BookCard book={book} borrow={borrowing} index={index} />
-            <ReturnButton
-              borrowingId={borrowing.id}
-              bookTitle={book.title}
+          <div
+            key={borrowing.id}
+            className="flex w-full flex-col items-center gap-3"
+          >
+            <BookCard
+              book={book}
+              borrow={borrowing}
+              activeBorrowings={[borrowing]}
+              index={index}
             />
           </div>
         ))}

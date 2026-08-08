@@ -3,7 +3,7 @@ import type { QueryParams } from "../base";
 export type BookStatus = "available" | "checked-out";
 
 export interface Book {
-  id: number;
+  id: string;
   slug: string;
   isbn: string;
   title: string;

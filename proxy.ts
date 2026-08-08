@@ -5,15 +5,9 @@ import { CookieKeys } from "./src/constants/SystemConfig";
 
 const intlMiddleware = createMiddleware(routing);
 
-const PROTECTED_PATHS = [
-  "/borrowings",
-  "/users",
-];
+const PROTECTED_PATHS = ["/profile"];
 
-const PUBLIC_PATHS = [
-  "/login",
-  "/signup",
-];
+const PUBLIC_PATHS = ["/login", "/signup"];
 
 function isProtected(pathname: string): boolean {
   return PROTECTED_PATHS.some((path) => pathname.startsWith(path));
@@ -34,8 +28,8 @@ export default function middleware(request: NextRequest) {
 
   // Check if path is protected
   if (isProtected(pathname)) {
-    const userId = request.headers.get("cookie")?.includes(CookieKeys.UserId);
-
+    const userId = request.headers.get("cookie")?.includes(CookieKeys.Token);
+    console.log(request.headers.get("cookie"));
     if (!userId) {
       const locale = pathname.split("/")[1] || "en";
       const loginUrl = new URL(`/${locale}/login`, request.url);

@@ -10,12 +10,12 @@ import {
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import type { Book } from "@/types";
+import type { Book, Borrowing } from "@/types";
 import { BookCoverPanel } from "./book-cover-panel";
 import { BookDetailsPanel } from "./book-details-panel";
 
 interface BookModalContextValue {
-  open: (book: Book) => void;
+  open: (book: Book, activeBorrowings?: Borrowing[]) => void;
   close: () => void;
 }
 
@@ -23,14 +23,25 @@ const BookModalContext = createContext<BookModalContextValue | null>(null);
 
 export function BookModalProvider({ children }: { children: ReactNode }) {
   const [book, setBook] = useState<Book | null>(null);
+  const [activeBorrowings, setActiveBorrowings] = useState<Borrowing[]>([]);
 
-  const open = useCallback((next: Book) => setBook(next), []);
+  const open = useCallback(
+    (next: Book, nextBorrowings: Borrowing[] = []) => {
+      setBook(next);
+      setActiveBorrowings(nextBorrowings);
+    },
+    [],
+  );
   const close = useCallback(() => setBook(null), []);
 
   return (
     <BookModalContext.Provider value={{ open, close }}>
       {children}
-      <BookModalRoot book={book} onClose={close} />
+      <BookModalRoot
+        book={book}
+        activeBorrowings={activeBorrowings}
+        onClose={close}
+      />
     </BookModalContext.Provider>
   );
 }
@@ -54,9 +65,11 @@ function useIsClient() {
 
 function BookModalRoot({
   book,
+  activeBorrowings,
   onClose,
 }: {
   book: Book | null;
+  activeBorrowings: Borrowing[];
   onClose: () => void;
 }) {
   const mounted = useIsClient();
@@ -127,7 +140,12 @@ function BookModalRoot({
 
         <div className="relative flex min-h-[420px] max-h-[85vh] [transform-style:preserve-3d] sm:min-h-[480px]">
           <BookCoverPanel book={book} />
-          <BookDetailsPanel book={book} titleId={titleId} onClose={onClose} />
+          <BookDetailsPanel
+            book={book}
+            titleId={titleId}
+            activeBorrowings={activeBorrowings}
+            onClose={onClose}
+          />
         </div>
       </div>
     </div>,

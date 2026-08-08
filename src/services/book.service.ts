@@ -5,15 +5,15 @@ import { ssrApi } from "./server";
 import seed from "../../db.json";
 
 function normalizeBook(book: Book): Book {
-  return { ...book, id: Number(book.id) };
+  return { ...book, id: String(book.id) };
 }
 
 function normalizeBorrowing(borrowing: Borrowing): Borrowing {
   return {
     ...borrowing,
-    id: Number(borrowing.id),
-    bookId: Number(borrowing.bookId),
-    userId: Number(borrowing.userId),
+    id: String(borrowing.id),
+    bookId: String(borrowing.bookId),
+    userId: String(borrowing.userId),
   };
 }
 

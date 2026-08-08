@@ -8,11 +8,16 @@ import { useToastHelpers } from "@/hooks/useToast";
 import { returnBook } from "@/services/borrowing.actions";
 
 interface ReturnButtonProps {
-  borrowingId: number;
+  borrowingId: string;
   bookTitle: string;
+  onSuccess?: () => void;
 }
 
-export function ReturnButton({ borrowingId, bookTitle }: ReturnButtonProps) {
+export function ReturnButton({
+  borrowingId,
+  bookTitle,
+  onSuccess,
+}: ReturnButtonProps) {
   const tCommon = useTranslations("common");
   const tBorrowings = useTranslations("borrowings");
   const tAuth = useTranslations("auth");
@@ -29,6 +34,7 @@ export function ReturnButton({ borrowingId, bookTitle }: ReturnButtonProps) {
         toastSuccess(tBorrowings("returnSuccess"), bookTitle);
         setIsOpen(false);
         router.refresh();
+        onSuccess?.();
       } else if (result.status === "already-returned") {
         toastError(tAuth("error"), tBorrowings("returnError"));
         setIsOpen(false);

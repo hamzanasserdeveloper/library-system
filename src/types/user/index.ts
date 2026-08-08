@@ -3,7 +3,7 @@ import type { QueryParams } from "../base";
 export type UserStatus = "active" | "inactive";
 
 export interface User {
-  id: number;
+  id: string;
   fullName: string;
   email: string;
   phone: string;

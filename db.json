@@ -322,8 +322,19 @@
       "fullName": "Hamza Nasser",
       "email": "hamza.nasser@beno.com",
       "phone": "09999999",
+      "membershipNumber": "LIB-1006",
+      "status": "active",
       "password": "12345678",
       "id": "eS-2gechN1c"
+    },
+    {
+      "fullName": "Hamza Nasser",
+      "email": "hamzanasser.developer@gmail.com",
+      "phone": "0999999999",
+      "membershipNumber": "LIB-1007",
+      "status": "active",
+      "password": "12345678",
+      "id": "F4cVGKFCs1A"
     }
   ],
   "borrowings": [
@@ -425,6 +436,69 @@
       "returnDate": null,
       "status": "borrowed",
       "id": "SfZ5KxPR9PM"
+    },
+    {
+      "bookId": "1",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "kg22feg9GRw"
+    },
+    {
+      "bookId": "1",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "YOHL0y46T0E"
+    },
+    {
+      "bookId": "4",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "nbMDcJfvNlg"
+    },
+    {
+      "bookId": "1",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "9Adl8uhA5RQ"
+    },
+    {
+      "bookId": "1",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "h-j3iDa8ji0"
+    },
+    {
+      "bookId": "1",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "88aujMWqOVk"
+    },
+    {
+      "bookId": "1",
+      "userId": "F4cVGKFCs1A",
+      "borrowDate": "2026-08-08",
+      "dueDate": "2026-08-22",
+      "returnDate": "2026-08-08",
+      "status": "returned",
+      "id": "YRDPo75HI6c"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

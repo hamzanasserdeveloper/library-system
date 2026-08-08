@@ -4,11 +4,14 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import type { Book, Borrowing } from "@/types";
 import { useBookModal } from "./book-modal";
+import { BorrowOrReturnButton } from "./borrow-or-return-button";
+import { useAuth } from "@/context";
 
 interface BookCardProps {
   book: Book;
   borrow?: Borrowing | null;
   index?: number;
+  activeBorrowings?: Borrowing[];
 }
 
 function formatShortDate(iso: string, locale: string) {
@@ -18,14 +21,23 @@ function formatShortDate(iso: string, locale: string) {
   }).format(new Date(iso));
 }
 
-export function BookCard({ book, borrow, index = 0 }: BookCardProps) {
+export function BookCard({
+  book,
+  borrow,
+  index = 0,
+  activeBorrowings = [],
+}: BookCardProps) {
   const locale = useLocale();
   const tStatus = useTranslations("status");
   const tBooks = useTranslations("books");
   const tCommon = useTranslations("common");
   const { open } = useBookModal();
+  const { user } = useAuth();
 
   const isAvailable = book.status === "available";
+  const myBorrowing = activeBorrowings.some(
+    (borrowing) => borrowing.userId === user?.id,
+  );
 
   return (
     <article
@@ -89,11 +101,20 @@ export function BookCard({ book, borrow, index = 0 }: BookCardProps) {
             {tBooks("noCopies")}
           </p>
         )}
+
+        {myBorrowing || isAvailable ? (
+          <div className="relative z-20 mt-3 w-full">
+            <BorrowOrReturnButton
+              book={book}
+              activeBorrowings={activeBorrowings}
+            />
+          </div>
+        ) : null}
       </div>
 
       <button
         type="button"
-        onClick={() => open(book)}
+        onClick={() => open(book, activeBorrowings)}
         aria-haspopup="dialog"
         aria-label={tBooks("openDetails", { title: book.title })}
         className="absolute inset-0 z-10 cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"

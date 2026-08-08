@@ -3,9 +3,9 @@ import type { QueryParams } from "../base";
 export type BorrowingStatus = "borrowed" | "returned";
 
 export interface Borrowing {
-  id: number;
-  bookId: number;
-  userId: number;
+  id: string;
+  bookId: string;
+  userId: string;
   borrowDate: string;
   dueDate: string;
   returnDate: string | null;
@@ -15,14 +15,14 @@ export interface Borrowing {
 export interface ListBorrowingsParams extends QueryParams {
   _page?: number;
   _per_page?: number;
-  userId?: number;
-  bookId?: number;
+  userId?: string;
+  bookId?: string;
   status?: BorrowingStatus;
   _sort?: string;
   _order?: "asc" | "desc";
 }
 
 export interface CreateBorrowingData {
-  bookId: number;
-  userId: number;
+  bookId: string;
+  userId: string;
 }

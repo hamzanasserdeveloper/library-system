@@ -46,13 +46,11 @@ function AuthProviderInner({ children }: { children: ReactNode }) {
   useEffect(() => {
     const hydrate = async () => {
       try {
-        const userId = getCookieByKey(CookieKeys.UserId);
-        if (userId) {
-          const currentUser = await api.get<User>(
-            Endpoints.auth.me(Number(userId)),
-          );
-          setUser(toAuthUser(currentUser));
-        }
+        const rawUserId = getCookieByKey(CookieKeys.UserId);
+        if (!rawUserId) return;
+
+        const currentUser = await api.get<User>(Endpoints.auth.me(rawUserId));
+        setUser(toAuthUser(currentUser));
       } catch {
         // Ignore hydration errors
       } finally {
@@ -77,7 +75,7 @@ function AuthProviderInner({ children }: { children: ReactNode }) {
       }
 
       setCookie(CookieKeys.UserId, String(found.id));
-      setCookie(CookieKeys.Token, "fake-jwt-token");
+      setCookie(CookieKeys.Token, `fake-jwt-token-${String(found.id)}`);
 
       setUser(toAuthUser(found));
     } finally {
@@ -95,10 +93,14 @@ function AuthProviderInner({ children }: { children: ReactNode }) {
         throw createApiError("Email already registered", 400);
       }
 
-      const created = await api.post<User>(Endpoints.auth.register, data);
+      const created = await api.post<User>(Endpoints.auth.register, {
+        ...data,
+        membershipNumber: `LIB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+        status: "active",
+      });
 
       setCookie(CookieKeys.UserId, String(created.id));
-      setCookie(CookieKeys.Token, "fake-jwt-token");
+      setCookie(CookieKeys.Token, `fake-jwt-token-${String(created.id)}`);
 
       setUser(toAuthUser(created));
     } finally {

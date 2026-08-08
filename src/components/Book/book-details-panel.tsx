@@ -2,18 +2,20 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import type { Book } from "@/types";
-import { BorrowButton } from "./borrow-button";
+import type { Book, Borrowing } from "@/types";
+import { BorrowOrReturnButton } from "./borrow-or-return-button";
 
 interface BookDetailsPanelProps {
   book: Book;
   titleId: string;
+  activeBorrowings?: Borrowing[];
   onClose: () => void;
 }
 
 export function BookDetailsPanel({
   book,
   titleId,
+  activeBorrowings = [],
   onClose,
 }: BookDetailsPanelProps) {
   const tBooks = useTranslations("books");
@@ -71,7 +73,11 @@ export function BookDetailsPanel({
       </p>
 
       <div className="mt-auto flex flex-col gap-2 pt-6">
-        {isAvailable && <BorrowButton book={book} onSuccess={onClose} />}
+        <BorrowOrReturnButton
+          book={book}
+          activeBorrowings={activeBorrowings}
+          onSuccess={onClose}
+        />
         <Link
           href={`/books/${book.slug}`}
           onClick={onClose}

@@ -53,13 +53,14 @@ export default async function BooksGrid({ searchParams }: BooksGridProps) {
   const books = booksResult.data?.data ?? [];
   const pages = booksResult.data?.pages ?? 1;
 
-  const activeByBookId = new Map<number, Borrowing>();
+  const activeByBookId = new Map<string, Borrowing[]>();
   (borrowingsResult.data ?? []).forEach((borrowing) => {
-    if (
-      borrowing.status === "borrowed" &&
-      !activeByBookId.has(borrowing.bookId)
-    ) {
-      activeByBookId.set(borrowing.bookId, borrowing);
+    if (borrowing.status !== "borrowed") return;
+    const list = activeByBookId.get(borrowing.bookId);
+    if (list) {
+      list.push(borrowing);
+    } else {
+      activeByBookId.set(borrowing.bookId, [borrowing]);
     }
   });
 
@@ -84,7 +85,8 @@ export default async function BooksGrid({ searchParams }: BooksGridProps) {
           >
             <BookCard
               book={book}
-              borrow={activeByBookId.get(book.id) ?? null}
+              borrow={activeByBookId.get(book.id)?.[0] ?? null}
+              activeBorrowings={activeByBookId.get(book.id) ?? []}
               index={index}
             />
           </div>

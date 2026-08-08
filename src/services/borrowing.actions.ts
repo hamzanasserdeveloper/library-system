@@ -32,7 +32,7 @@ function getDueDate(borrowDate: string): string {
   return toDateString(due);
 }
 
-async function getCurrentUserId(): Promise<number | null> {
+async function getCurrentUserId(): Promise<string | null> {
   const cookieStore = await cookies();
   let raw = cookieStore.get(CookieKeys.UserId)?.value;
 
@@ -46,12 +46,10 @@ async function getCurrentUserId(): Promise<number | null> {
     }
   }
 
-  if (!raw) return null;
-  const id = Number(raw);
-  return Number.isFinite(id) ? id : null;
+  return raw || null;
 }
 
-export async function borrowBook(bookId: number): Promise<BorrowResult> {
+export async function borrowBook(bookId: string): Promise<BorrowResult> {
   const userId = await getCurrentUserId();
   if (!userId) return { status: "unauth" };
 
@@ -109,7 +107,7 @@ export async function borrowBook(bookId: number): Promise<BorrowResult> {
   }
 }
 
-export async function returnBook(borrowingId: number): Promise<ReturnResult> {
+export async function returnBook(borrowingId: string): Promise<ReturnResult> {
   const userId = await getCurrentUserId();
   if (!userId) return { status: "unauth" };
 

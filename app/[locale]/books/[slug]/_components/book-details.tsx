@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { getBookBySlug, getBorrowings } from "@/services/book.service";
 import { safeResult } from "@/services/core";
-import { BorrowButton } from "@/components/Book";
+import { BorrowOrReturnButton } from "@/components/Book";
 
 interface BookDetailsProps {
   locale: string;
@@ -32,10 +32,11 @@ export async function BookDetails({
   const tStatus = await getTranslations("status");
 
   const borrowingsResult = await safeResult(getBorrowings());
-  const activeBorrowing = (borrowingsResult.data ?? []).find(
+  const activeBorrowings = (borrowingsResult.data ?? []).filter(
     (borrowing) =>
       borrowing.bookId === book.id && borrowing.status === "borrowed",
   );
+  const activeBorrowing = activeBorrowings[0];
 
   const formatDate = (iso: string) =>
     new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
@@ -157,7 +158,11 @@ export async function BookDetails({
               <DetailsRow label={tBooks("isbn")} value={book.isbn} />
             </dl>
 
-            {isAvailable && <BorrowButton book={book} autoOpen={autoOpenBorrow} />}
+            <BorrowOrReturnButton
+              book={book}
+              activeBorrowings={activeBorrowings}
+              autoOpen={autoOpenBorrow}
+            />
 
             {activeBorrowing && (
               <p className="rounded-lg bg-accent/15 px-4 py-2.5 text-sm text-accent-foreground">

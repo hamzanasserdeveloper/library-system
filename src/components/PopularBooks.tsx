@@ -3,26 +3,56 @@ import { safeResult } from "@/services/core";
 import { getBooks, getBorrowings } from "@/services/book.service";
 import { BookCard } from "@/components/Book";
 import { Link } from "@/i18n/navigation";
+import EmptyState from "@/components/EmptyState";
+import ErrorState from "@/components/ErrorState";
 import type { Borrowing } from "@/types";
 
 export default async function PopularBooks() {
   const t = await getTranslations("home");
+  const tCommon = await getTranslations("common");
+  const tBooks = await getTranslations("books");
 
   const [booksResult, borrowingsResult] = await Promise.all([
     safeResult(getBooks({ _page: 1, _per_page: 6 })),
     safeResult(getBorrowings()),
   ]);
 
-  const books = booksResult.data?.data ?? [];
-  const borrowings = borrowingsResult.data ?? [];
+  if (booksResult.error) {
+    return (
+      <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
+        <ErrorState message={tCommon("error")} />
+      </section>
+    );
+  }
 
-  const activeByBookId = new Map<number, Borrowing>();
-  borrowings.forEach((borrowing) => {
-    if (
-      borrowing.status === "borrowed" &&
-      !activeByBookId.has(borrowing.bookId)
-    ) {
-      activeByBookId.set(borrowing.bookId, borrowing);
+  const books = booksResult.data?.data ?? [];
+
+  if (books.length === 0) {
+    return (
+      <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
+        <EmptyState
+          message={tBooks("empty")}
+          action={
+            <Link
+              href="/books"
+              className="rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary/50 hover:text-primary"
+            >
+              {t("popular.viewAll")}
+            </Link>
+          }
+        />
+      </section>
+    );
+  }
+
+  const activeByBookId = new Map<string, Borrowing[]>();
+  (borrowingsResult.data ?? []).forEach((borrowing) => {
+    if (borrowing.status !== "borrowed") return;
+    const list = activeByBookId.get(borrowing.bookId);
+    if (list) {
+      list.push(borrowing);
+    } else {
+      activeByBookId.set(borrowing.bookId, [borrowing]);
     }
   });
 
@@ -49,12 +79,13 @@ export default async function PopularBooks() {
         </Link>
       </div>
 
-      <div className="mt-12 grid grid-cols-3 place-items-center gap-x-3 gap-y-14 sm:gap-x-6 lg:gap-x-10">
+      <div className="mt-12 grid grid-cols-2 place-items-center gap-x-3 gap-y-12 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-14 lg:grid-cols-3 lg:gap-x-10">
         {books.map((book, index) => (
           <BookCard
             key={book.id}
             book={book}
-            borrow={activeByBookId.get(book.id) ?? null}
+            borrow={activeByBookId.get(book.id)?.[0] ?? null}
+            activeBorrowings={activeByBookId.get(book.id) ?? []}
             index={index}
           />
         ))}
